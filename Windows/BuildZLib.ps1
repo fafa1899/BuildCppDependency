@@ -2,22 +2,15 @@ param(
     [string]$SourceAddress = "https://www.zlib.net/zlib131.zip",
     [string]$SourceZipPath = "../Source/zlib131.zip",
     [string]$SourceLocalPath = "./zlib-1.3.1",
-    [string]$Generator = "Visual Studio 16 2019",
-    [string]$MSBuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
-    [string]$InstallDir = "$env:GISBasic"
+    [string]$Generator,
+    [string]$MSBuild,
+    [string]$InstallDir,
+    [string]$SymbolDir   
 )
 
-if (!(Test-Path $SourceLocalPath)) {
-    if (!(Test-Path $SourceZipPath)) {
-        #下载源代码
-        Write-Output "Download Zip..."
-        Invoke-WebRequest -Uri $SourceAddress -OutFile $SourceZipPath
-    }
+. "./DownloadAndUnzip.ps1"
 
-    # 解压缩 ZIP 文件   
-    Write-Output "Unzip Source..."
-    Expand-Archive -Path $SourceZipPath -DestinationPath "./"
-}
+DownloadAndUnzip -SourceLocalPath $SourceLocalPath -SourceZipPath $SourceZipPath -SourceAddress $SourceAddress
 
 # 清除旧的构建目录
 $BuildDir = $SourceLocalPath + "/build"  
@@ -31,20 +24,19 @@ Push-Location $BuildDir
 
 try {
     # 配置CMake  
-    cmake .. -G "$Generator" -A x64 -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="$InstallDir"
+    cmake .. -G "$Generator" -A x64 -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="$InstallDir" -DZLIB_BUILD_EXAMPLES=OFF
 
-    # 生成解决方案并编译
-    & $MSBuild ALL_BUILD.vcxproj /p:Configuration=RelWithDebInfo /p:Platform=x64 /m
+    # 构建阶段，指定构建类型
+    cmake --build . --config RelWithDebInfo
 
-    # 安装库
-    & $MSBuild INSTALL.vcxproj /p:Configuration=RelWithDebInfo /p:Platform=x64 /m
+    # 安装阶段，指定构建类型和安装目标
+    cmake --build . --config RelWithDebInfo --target install
 
     # 复制符号库
     $PdbFiles = @(
         "./RelWithDebInfo/zlib.pdb",
         "./RelWithDebInfo/zlibstatic.pdb"
-    ) 
-    $SymbolDir = $InstallDir + "/symbol"
+    )     
     foreach ($file in $PdbFiles) {  
         Write-Output $file
         Copy-Item -Path $file -Destination $SymbolDir

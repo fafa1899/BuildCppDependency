@@ -1,11 +1,11 @@
 param(   
-    [string]$SourceAddress = "https://codeload.github.com/libjpeg-turbo/libjpeg-turbo/zip/refs/tags/3.0.3",
-    [string]$SourceZipPath = "../Source/libjpeg-turbo-3.0.3.zip",
-    [string]$SourceLocalPath = "./libjpeg-turbo-3.0.3",
+    [string]$SourceAddress = "https://altushost-swe.dl.sourceforge.net/project/freetype/freetype2/2.13.3/ft2133.zip?viasf=1",
+    [string]$SourceZipPath = "../Source/ft2133.zip",
+    [string]$SourceLocalPath = "./freetype-2.13.3",
     [string]$Generator,
     [string]$MSBuild,
     [string]$InstallDir,
-    [string]$SymbolDir 
+    [string]$SymbolDir   
 )
 
 . "./DownloadAndUnzip.ps1"
@@ -23,8 +23,12 @@ New-Item -ItemType Directory -Path $BuildDir
 Push-Location $BuildDir
 
 try {
-    # 配置CMake  
-    cmake .. -G "$Generator" -A x64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="$InstallDir" -DENABLE_STATIC=off
+    # 配置CMake      
+    cmake .. -G "$Generator" -A x64 `
+        -DBUILD_SHARED_LIBS=true `
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo `
+        -DCMAKE_PREFIX_PATH="$InstallDir" `
+        -DCMAKE_INSTALL_PREFIX="$InstallDir"        
 
     # 构建阶段，指定构建类型
     cmake --build . --config RelWithDebInfo
@@ -34,13 +38,12 @@ try {
 
     # 复制符号库
     $PdbFiles = @(
-        "./RelWithDebInfo/jpeg62.pdb",
-        "./RelWithDebInfo/turbojpeg.pdb"
-    ) 
+        "./RelWithDebInfo/freetype.pdb"     
+    )     
     foreach ($file in $PdbFiles) {  
         Write-Output $file
         Copy-Item -Path $file -Destination $SymbolDir
-    }    
+    }     
 }
 finally {
     # 返回原始工作目录
