@@ -29,9 +29,10 @@ try {
         -DCMAKE_PREFIX_PATH="$InstallDir" `
         -DCMAKE_INSTALL_PREFIX="$InstallDir" `
         -DGIFLIB_LIBRARY="$InstallDir/lib/giflib.lib" `
-        -DBUILD_OSG_APPLICATIONS=OFF `
+        -DBUILD_OSG_APPLICATIONS=ON `
         -DBUILD_OSG_EXAMPLES=OFF `
-        -DBUILD_OSG_DEPRECATED_SERIALIZERS=OFF
+        -DBUILD_OSG_DEPRECATED_SERIALIZERS=OFF `
+        -DCMAKE_RELWITHDEBINFO_POSTFIX=""
 
     # 构建阶段，指定构建类型
     cmake --build . --config RelWithDebInfo -- /m:8
@@ -45,7 +46,7 @@ try {
     # 移动每个 .pdb 文件到目标目录
     foreach ($file in $pdbFiles) {
         $destinationPath = Join-Path -Path $SymbolDir -ChildPath $file.Name
-        Move-Item -Path $file.FullName -Destination $destinationPath
+        Move-Item -Path $file.FullName -Destination $destinationPath -Force
         Write-Output "Moved: $($file.FullName) -> $destinationPath"
     }        
 }

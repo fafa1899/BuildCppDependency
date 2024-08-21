@@ -29,14 +29,15 @@ try {
         -DCMAKE_BUILD_TYPE=RelWithDebInfo `
         -DCMAKE_PREFIX_PATH="$InstallDir" `
         -DCMAKE_INSTALL_PREFIX="$InstallDir" `
-        -DOPENTHREADS_LIBRARY_RELEASE="$InstallDir/lib/OpenThreadsrd.lib" `
-        -DOSG_LIBRARY_RELEASE="$InstallDir/lib/osgrd.lib" `
-        -DOSGDB_LIBRARY_RELEASE="$InstallDir/lib/osgDBrd.lib" `
-        -DOSGGA_LIBRARY_RELEASE="$InstallDir/lib/osgGArd.lib" `
-        -DOSGUTIL_LIBRARY_RELEASE="$InstallDir/lib/osgUtilrd.lib" `
-        -DOSGTEXT_LIBRARY_RELEASE="$InstallDir/lib/osgTextrd.lib" `
-        -DOSGVIEWER_LIBRARY_RELEASE="$InstallDir/lib/osgViewerrd.lib" `
-        -DOSGWIDGET_LIBRARY_RELEASE="$InstallDir/lib/osgWidgetrd.lib"
+        -DOPENTHREADS_LIBRARY_RELEASE="$InstallDir/lib/OpenThreads.lib" `
+        -DOSG_LIBRARY_RELEASE="$InstallDir/lib/osg.lib" `
+        -DOSGDB_LIBRARY_RELEASE="$InstallDir/lib/osgDB.lib" `
+        -DOSGGA_LIBRARY_RELEASE="$InstallDir/lib/osgGA.lib" `
+        -DOSGUTIL_LIBRARY_RELEASE="$InstallDir/lib/osgUtil.lib" `
+        -DOSGTEXT_LIBRARY_RELEASE="$InstallDir/lib/osgText.lib" `
+        -DOSGVIEWER_LIBRARY_RELEASE="$InstallDir/lib/osgViewer.lib" `
+        -DOSGWIDGET_LIBRARY_RELEASE="$InstallDir/lib/osgWidget.lib" `
+        -DCMAKE_RELWITHDEBINFO_POSTFIX=""
 
     # 构建阶段，指定构建类型
     cmake --build . --config RelWithDebInfo -- /m:8
@@ -48,10 +49,10 @@ try {
     # 复制include文件夹
     Copy-Item -Path "../include/osgQt" -Destination "$InstallDir/include" -Recurse -Force
     # 复制输出文件
-    Copy-Item -Path "./lib/osgQt5rd.lib" -Destination "$InstallDir/lib" -Force
+    Copy-Item -Path "./lib/osgQt5.lib" -Destination "$InstallDir/lib" -Force
     Copy-Item -Path "./packaging/pkgconfig/openscenegraph-osgQt5.pc" -Destination "$InstallDir/lib/pkgconfig" -Force
-    Copy-Item -Path "./bin/osg145-osgQt5rd.dll" -Destination "$InstallDir/bin" -Force
-    Copy-Item -Path "./bin/osg145-osgQt5rd.pdb" -Destination "$SymbolDir" -Force
+    Copy-Item -Path "./bin/osg145-osgQt5.dll" -Destination "$InstallDir/bin" -Force
+    Copy-Item -Path "./bin/osg145-osgQt5.pdb" -Destination "$SymbolDir" -Force
 }
 finally {
     # 返回原始工作目录
