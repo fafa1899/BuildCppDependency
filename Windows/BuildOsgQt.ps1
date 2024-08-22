@@ -1,6 +1,6 @@
 param(   
-    [string]$SourceZipPath = "../Source/osgQt-topic-Qt4.zip",
-    [string]$SourceLocalPath = "./osgQt-topic-Qt4",
+    [string]$SourceZipPath = "../Source/osgQt-master.zip",
+    [string]$SourceLocalPath = "./osgQt-master",
     [string]$Generator,
     [string]$MSBuild,
     [string]$InstallDir,
@@ -29,15 +29,8 @@ try {
         -DCMAKE_BUILD_TYPE=RelWithDebInfo `
         -DCMAKE_PREFIX_PATH="$InstallDir" `
         -DCMAKE_INSTALL_PREFIX="$InstallDir" `
-        -DOPENTHREADS_LIBRARY_RELEASE="$InstallDir/lib/OpenThreads.lib" `
-        -DOSG_LIBRARY_RELEASE="$InstallDir/lib/osg.lib" `
-        -DOSGDB_LIBRARY_RELEASE="$InstallDir/lib/osgDB.lib" `
-        -DOSGGA_LIBRARY_RELEASE="$InstallDir/lib/osgGA.lib" `
-        -DOSGUTIL_LIBRARY_RELEASE="$InstallDir/lib/osgUtil.lib" `
-        -DOSGTEXT_LIBRARY_RELEASE="$InstallDir/lib/osgText.lib" `
-        -DOSGVIEWER_LIBRARY_RELEASE="$InstallDir/lib/osgViewer.lib" `
-        -DOSGWIDGET_LIBRARY_RELEASE="$InstallDir/lib/osgWidget.lib" `
-        -DCMAKE_RELWITHDEBINFO_POSTFIX=""
+        -DCMAKE_RELWITHDEBINFO_POSTFIX="" `
+        -DBUILD_OSG_EXAMPLES=OFF
 
     # 构建阶段，指定构建类型
     cmake --build . --config RelWithDebInfo -- /m:8
@@ -47,12 +40,12 @@ try {
 
     # 自定义安装
     # 复制include文件夹
-    Copy-Item -Path "../include/osgQt" -Destination "$InstallDir/include" -Recurse -Force
-    # 复制输出文件
-    Copy-Item -Path "./lib/osgQt5.lib" -Destination "$InstallDir/lib" -Force
-    Copy-Item -Path "./packaging/pkgconfig/openscenegraph-osgQt5.pc" -Destination "$InstallDir/lib/pkgconfig" -Force
-    Copy-Item -Path "./bin/osg145-osgQt5.dll" -Destination "$InstallDir/bin" -Force
-    Copy-Item -Path "./bin/osg145-osgQt5.pdb" -Destination "$SymbolDir" -Force
+    Copy-Item -Path "../include/osgQOpenGL" -Destination "$InstallDir/include" -Recurse -Force
+    # # 复制输出文件
+    Copy-Item -Path "./lib/osgQOpenGL.lib" -Destination "$InstallDir/lib" -Force
+    Copy-Item -Path "./packaging/pkgconfig/openscenegraph-osgQt.pc" -Destination "$InstallDir/lib/pkgconfig" -Force
+    Copy-Item -Path "./bin/osg145-osgQOpenGL.dll" -Destination "$InstallDir/bin" -Force
+    Copy-Item -Path "./bin/osg145-osgQOpenGL.pdb" -Destination "$SymbolDir" -Force
 }
 finally {
     # 返回原始工作目录
