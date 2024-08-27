@@ -41,7 +41,7 @@ try {
     cmake --build . --config RelWithDebInfo --target install
 
     # 获取源目录下的所有 .pdb 文件
-    $pdbFiles = Get-ChildItem -Path "$env:eGova3rdParty/bin" -Filter *.pdb -Recurse
+    $pdbFiles = Get-ChildItem -Path "$InstallDir/bin" -Filter *.pdb -Recurse
 
     # 移动每个 .pdb 文件到目标目录
     foreach ($file in $pdbFiles) {
