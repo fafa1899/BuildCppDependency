@@ -1,14 +1,19 @@
-
-
-param( 
-    [string]$SourceAddress = "https://jaist.dl.sourceforge.net/project/libpng/libpng16/1.6.43/lpng1643.zip",
-    [string]$SourceZipPath = "../Source/lpng1643.zip",
-    [string]$SourceLocalPath = "./lpng1643",
+param(   
+    [string]$SourceAddress = "https://www.zlib.net/zlib131.zip",
+    [string]$SourceZipPath = "../Source/zlib131.zip",
+    [string]$SourceLocalPath = "./zlib-1.3.1",
     [string]$Generator,
     [string]$MSBuild,
     [string]$InstallDir,
-    [string]$SymbolDir 
+    [string]$SymbolDir   
 )
+
+# 检查目标文件是否存在，以判断是否安装
+$DstFilePath = "$InstallDir/bin/zlib.dll"
+if (Test-Path $DstFilePath) {
+    Write-Output "The current library has been installed."
+    exit 1
+} 
 
 . "./DownloadAndUnzip.ps1"
 
@@ -26,13 +31,8 @@ Push-Location $BuildDir
 
 try {
     # 配置CMake  
-    cmake .. -G "$Generator" -A x64 `
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-    -DCMAKE_PREFIX_PATH="$InstallDir" `
-    -DCMAKE_INSTALL_PREFIX="$InstallDir" `
-    -DPNG_TESTS=OFF `
-    -DPNG_STATIC=OFF `
-    
+    cmake .. -G "$Generator" -A x64 -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="$InstallDir" -DZLIB_BUILD_EXAMPLES=OFF
+
     # 构建阶段，指定构建类型
     cmake --build . --config RelWithDebInfo
 
@@ -41,12 +41,13 @@ try {
 
     # 复制符号库
     $PdbFiles = @(
-        "./RelWithDebInfo/libpng16.pdb"
-    ) 
+        "./RelWithDebInfo/zlib.pdb",
+        "./RelWithDebInfo/zlibstatic.pdb"
+    )     
     foreach ($file in $PdbFiles) {  
         Write-Output $file
         Copy-Item -Path $file -Destination $SymbolDir
-    }   
+    }     
 }
 finally {
     # 返回原始工作目录
