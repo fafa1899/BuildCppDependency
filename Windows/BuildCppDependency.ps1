@@ -17,6 +17,8 @@ $LibrarySet.Add("giflib") > $null
 $LibrarySet.Add("freetype") > $null
 $LibrarySet.Add("OpenSceneGraph") > $null
 $LibrarySet.Add("eigen") > $null
+$LibrarySet.Add("osgQt5") > $null
+$LibrarySet.Add("osgQt") > $null
 
 # 检查是否传递了$Install参数
 if ($PSBoundParameters.ContainsKey('Install')) {   

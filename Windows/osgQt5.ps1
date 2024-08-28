@@ -7,6 +7,18 @@ param(
     [string]$SymbolDir   
 )
 
+# 检查目标文件是否存在，以判断是否安装
+$DstFilePath = "$InstallDir/bin/osg145-osgQt5.dll"
+if (Test-Path $DstFilePath) {
+    Write-Output "The current library has been installed."
+    exit 1
+} 
+
+# 创建所有依赖库的容器
+. "./BuildRequired.ps1"
+$Librarys = @("OpenSceneGraph") 
+BuildRequired -Librarys $Librarys
+
 if (!(Test-Path $SourceLocalPath)) {
     # 解压缩 ZIP 文件   
     Write-Output "Unzip Source..."
