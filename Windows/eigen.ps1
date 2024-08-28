@@ -8,8 +8,14 @@ param(
     [string]$SymbolDir 
 )
 
-. "./DownloadAndUnzip.ps1"
+# 检查目标文件是否存在，以判断是否安装
+$DstFilePath = "$InstallDir/include/eigen3/Eigen/Eigen"
+if (Test-Path $DstFilePath) {
+    Write-Output "The current library has been installed."
+    exit 1
+} 
 
+. "./DownloadAndUnzip.ps1"
 DownloadAndUnzip -SourceLocalPath $SourceLocalPath -SourceZipPath $SourceZipPath -SourceAddress $SourceAddress
 
 # 清除旧的构建目录

@@ -16,6 +16,7 @@ $LibrarySet.Add("libtiff") > $null
 $LibrarySet.Add("giflib") > $null
 $LibrarySet.Add("freetype") > $null
 $LibrarySet.Add("OpenSceneGraph") > $null
+$LibrarySet.Add("eigen") > $null
 
 # 检查是否传递了$Install参数
 if ($PSBoundParameters.ContainsKey('Install')) {   
@@ -64,6 +65,3 @@ else {
 
 #Write-Output "Build minizip..."
 #./BuildMiniZip.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
-
-#Write-Output "Build Eigen..."
-#./BuildEigen.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
