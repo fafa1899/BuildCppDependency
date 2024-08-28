@@ -57,13 +57,5 @@ else {
     Write-Host "Please enter the parameters!"
 }
 
-#需要OpenSceneGraph
-#Write-Output "Build OsgQt5..."
-#./BuildOsgQt5.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
-
-#需要OpenSceneGraph
-#Write-Output "Build OsgQt..."
-#./BuildOsgQt.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
-
 #Write-Output "Build minizip..."
 #./BuildMiniZip.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
