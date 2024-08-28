@@ -6,6 +6,13 @@ param(
     [string]$SymbolDir
 )
 
+# 检查目标文件是否存在，以判断是否安装
+$DstFilePath = "$InstallDir/bin/giflib.dll"
+if (Test-Path $DstFilePath) {
+    Write-Output "The current library has been installed."
+    exit 1
+} 
+
 # 清除旧的构建目录
 $BuildDir = $SourceLocalPath + "/build"  
 if (Test-Path $BuildDir) {

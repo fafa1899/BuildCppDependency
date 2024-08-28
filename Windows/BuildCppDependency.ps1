@@ -13,6 +13,9 @@ $LibrarySet.Add("zlib") > $null
 $LibrarySet.Add("libpng") > $null
 $LibrarySet.Add("libjpeg") > $null
 $LibrarySet.Add("libtiff") > $null
+$LibrarySet.Add("giflib") > $null
+$LibrarySet.Add("freetype") > $null
+$LibrarySet.Add("OpenSceneGraph") > $null
 
 # 检查是否传递了$Install参数
 if ($PSBoundParameters.ContainsKey('Install')) {   
@@ -50,17 +53,6 @@ elseif ($PSBoundParameters.ContainsKey('List')) {
 else {
     Write-Host "Please enter the parameters!"
 }
-
-#Write-Output "Build giflib..."
-#./BuildGifLib.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
-
-#需要zlib、libpng
-#Write-Output "Build FreeType..."
-#./BuildFreeType.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
-
-#需要Freetype、GIFLIB、JPEG、ZLIB、PNG、TIFF，额外链接了没有重新构建的FBX、GDAL、CURL
-#Write-Output "Build OpenSceneGraph..."
-#./BuildOpenSceneGraph.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
 
 #需要OpenSceneGraph
 #Write-Output "Build OsgQt5..."

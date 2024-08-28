@@ -11,7 +11,7 @@ function BuildRequired {
         $BuildScript = "./$item.ps1";           
         & $BuildScript -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir   
     }
-    Write-Output "All required dependencies have been installed..."   
+    Write-Output "All required dependencies have been installed."   
     Write-Output "------------------------------------------------"  
 }
 
