@@ -1,8 +1,8 @@
 param(   
-    [string]$Generator = "Visual Studio 16 2019",
-    [string]$MSBuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
-    [string]$InstallDir = "$env:eGova3rdParty",
-    [string]$SymbolDir = "$InstallDir/symbols",   
+    [string]$Generator,
+    [string]$MSBuild,
+    [string]$InstallDir,
+    [string]$SymbolDir,   
     [string]$Install,   
     [string]$List
 )
@@ -20,6 +20,7 @@ $LibrarySet.Add("eigen") > $null
 $LibrarySet.Add("osgQt5") > $null
 $LibrarySet.Add("osgQt") > $null
 $LibrarySet.Add("minizip") > $null
+$LibrarySet.Add("libzip") > $null
 
 # 检查是否传递了$Install参数
 if ($PSBoundParameters.ContainsKey('Install')) {   
@@ -57,6 +58,3 @@ elseif ($PSBoundParameters.ContainsKey('List')) {
 else {
     Write-Host "Please enter the parameters!"
 }
-
-#Write-Output "Build minizip..."
-#./BuildMiniZip.ps1 -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
