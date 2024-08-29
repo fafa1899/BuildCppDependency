@@ -27,14 +27,8 @@ else()
     message(">> unknow compiler.")
 endif()
 
-# 查找 PkgConfig 模块
-find_package(PkgConfig REQUIRED)
-
-# 查找 zlib 模块
-pkg_check_modules(ZLIB REQUIRED zlib)
-
-# 添加包含目录
-include_directories(${ZLIB_INCLUDE_DIRS})
+# 查找 ZLIB 模块
+find_package(ZLIB REQUIRED)
 
 # 源代码文件
 set(PROJECT_SOURCES ioapi.c iowin32.c miniunz.c minizip.c mztools.c unzip.c zip.c)
@@ -42,6 +36,9 @@ set(PROJECT_HEADER crypt.h ioapi.h iowin32.h mztools.h unzip.h zip.h)
 
 # 将源代码添加到此项目的可执行文件。
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADER})
+
+#
+target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB)
 
 # TODO: 如有需要，请添加测试
 
