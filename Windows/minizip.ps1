@@ -6,6 +6,13 @@ param(
     [string]$SymbolDir
 )
 
+# 检查目标文件是否存在，以判断是否安装
+$DstFilePath = "$InstallDir/lib/minizip.lib"
+if (Test-Path $DstFilePath) {
+    Write-Output "The current library has been installed."
+    exit 1
+} 
+
 # 清除旧的构建目录
 $BuildDir = $SourceLocalPath + "/build"  
 if (Test-Path $BuildDir) {
@@ -18,7 +25,10 @@ Push-Location $BuildDir
 
 try {
     # 配置CMake  
-    cmake .. -G "$Generator" -A x64 -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="$InstallDir"
+    cmake .. -G "$Generator" -A x64 `
+    -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo `
+    -DCMAKE_PREFIX_PATH="$InstallDir" `
+    -DCMAKE_INSTALL_PREFIX="$InstallDir"
 
     # 构建阶段，指定构建类型
     cmake --build . --config RelWithDebInfo
