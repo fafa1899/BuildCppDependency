@@ -8,3 +8,6 @@
 /osgQt-topic-Qt4
 /eigen-3.4.0
 /libzip-1.10.1
+/abseil-cpp-20240722.0
+/opencv-3.4.16
+/protobuf-27.4

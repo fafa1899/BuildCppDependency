@@ -22,8 +22,8 @@ $LibrarySet.Add("osgQt") > $null
 $LibrarySet.Add("minizip") > $null
 $LibrarySet.Add("libzip") > $null
 $LibrarySet.Add("opencv") > $null
-$LibrarySet.Add("protobuf") > $null
-$LibrarySet.Add("abseil-cpp") > $null
+#$LibrarySet.Add("protobuf") > $null
+#$LibrarySet.Add("abseil-cpp") > $null
 
 # 检查是否传递了$Install参数
 if ($PSBoundParameters.ContainsKey('Install')) {   

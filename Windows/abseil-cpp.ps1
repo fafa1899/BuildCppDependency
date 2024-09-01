@@ -9,7 +9,7 @@ param(
 )
 
 # 检查目标文件是否存在，以判断是否安装
-$DstFilePath = "$InstallDir/lib/absl_base.lib"
+$DstFilePath = "$InstallDir/bin/abseil_dll.dll"
 if (Test-Path $DstFilePath) {
     Write-Output "The current library has been installed."
     exit 1
@@ -46,15 +46,14 @@ try {
     # 安装阶段，指定构建类型和安装目标
     cmake --build . --config RelWithDebInfo --target install
 
-    # 获取源目录下的所有 .pdb 文件  
-    $pdbFiles = Get-ChildItem -Path "./absl" -Filter *.pdb -Recurse
-
-    # 移动每个 .pdb 文件到目标目录
-    foreach ($file in $pdbFiles) {      
-        $destinationPath = Join-Path -Path $SymbolDir -ChildPath $file.Name
-        Copy-Item -Path $file.FullName -Destination $destinationPath -Force
-        Write-Output "Copyed: $($file.FullName) -> $destinationPath"
-    }    
+    # # 复制符号库
+    # $PdbFiles = @(
+    #     "./bin/RelWithDebInfo/abseil_dll.pdb"
+    # ) 
+    # foreach ($file in $PdbFiles) {  
+    #     Write-Output $file
+    #     Copy-Item -Path $file -Destination $SymbolDir
+    # }   
 }
 finally {
     # 返回原始工作目录
