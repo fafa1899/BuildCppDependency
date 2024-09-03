@@ -75,7 +75,7 @@ try {
     }   
   
     # 将二进制成果文件复制到bin目录 
-    Move-Item -Path "$InstallDir/x64/vc16/bin/*" -Destination "$InstallDir/bin" -Force
+    Copy-Item -Path "$InstallDir/x64/vc16/bin/*" -Destination "$InstallDir/bin" -Force
 }
 finally {
     # 返回原始工作目录

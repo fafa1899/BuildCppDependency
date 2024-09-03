@@ -15,6 +15,11 @@ if (Test-Path $DstFilePath) {
     exit 1
 } 
 
+# 创建所有依赖库的容器
+. "./BuildRequired.ps1"
+$Librarys = @("zlib") 
+BuildRequired -Librarys $Librarys
+
 . "./DownloadAndUnzip.ps1"
 DownloadAndUnzip -SourceLocalPath $SourceLocalPath -SourceZipPath $SourceZipPath -SourceAddress $SourceAddress
 
