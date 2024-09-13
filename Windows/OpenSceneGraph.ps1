@@ -42,8 +42,8 @@ try {
         -DGIFLIB_LIBRARY="$InstallDir/lib/giflib.lib" `
         -DBUILD_OSG_APPLICATIONS=ON `
         -DBUILD_OSG_EXAMPLES=OFF `
-        -DBUILD_OSG_DEPRECATED_SERIALIZERS=OFF `
         -DCMAKE_RELWITHDEBINFO_POSTFIX=""
+        #-DBUILD_OSG_DEPRECATED_SERIALIZERS=OFF `
 
     # 构建阶段，指定构建类型
     cmake --build . --config RelWithDebInfo -- /m:8

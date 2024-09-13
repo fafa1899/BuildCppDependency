@@ -22,6 +22,7 @@ $LibrarySet.Add("osgQt") > $null
 $LibrarySet.Add("minizip") > $null
 $LibrarySet.Add("libzip") > $null
 $LibrarySet.Add("opencv") > $null
+$LibrarySet.Add("uriparser") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
 
