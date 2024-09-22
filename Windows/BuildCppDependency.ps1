@@ -25,6 +25,7 @@ $LibrarySet.Add("opencv") > $null
 $LibrarySet.Add("uriparser") > $null
 $LibrarySet.Add("cpp-httplib") > $null
 $LibrarySet.Add("nlohmann-json") > $null
+$LibrarySet.Add("sqlite") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
 
