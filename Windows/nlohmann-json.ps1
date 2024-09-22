@@ -1,6 +1,6 @@
 param(   
-    [string]$SourceLocalPath = "../Source/cpp-httplib-0.18.0",
-    [string]$BuildDir = "./cpp-httplib-0.18.0",
+    [string]$SourceLocalPath = "../Source/json-3.11.3",
+    [string]$BuildDir = "./json-3.11.3",
     [string]$Generator,
     [string]$MSBuild,
     [string]$InstallDir,  
@@ -8,7 +8,7 @@ param(
 )
 
 # 检查目标文件是否存在，以判断是否安装
-$DstFilePath = "$InstallDir/include/httplib.h"
+$DstFilePath = "$InstallDir/include/nlohmann/json.hpp"
 if (Test-Path $DstFilePath) {
     Write-Output "The current library has been installed."
     exit 1
@@ -25,15 +25,15 @@ cmake $SourceLocalPath `
     -B "$BuildDir" `
     -G "$Generator" `
     -A x64 `
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo `
     -DCMAKE_PREFIX_PATH="$InstallDir" `
     -DCMAKE_INSTALL_PREFIX="$InstallDir" `
+    -DJSON_BuildTests=off
    
 # 构建阶段，指定构建类型
-cmake --build $BuildDir --config RelWithDebInfo
+cmake --build $BuildDir
 
 # 安装阶段，指定构建类型和安装目标
-cmake --build $BuildDir --config RelWithDebInfo --target install
+cmake --build $BuildDir --target install
 
 # 清理构建目录
 Remove-Item -Path $BuildDir -Recurse -Force
