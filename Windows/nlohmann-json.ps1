@@ -25,15 +25,16 @@ cmake $SourceLocalPath `
     -B "$BuildDir" `
     -G "$Generator" `
     -A x64 `
+    -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo `
     -DCMAKE_PREFIX_PATH="$InstallDir" `
     -DCMAKE_INSTALL_PREFIX="$InstallDir" `
     -DJSON_BuildTests=off
    
 # 构建阶段，指定构建类型
-cmake --build $BuildDir
+cmake --build $BuildDir --config RelWithDebInfo
 
 # 安装阶段，指定构建类型和安装目标
-cmake --build $BuildDir --target install
+cmake --build $BuildDir --config RelWithDebInfo --target install
 
 # 清理构建目录
 Remove-Item -Path $BuildDir -Recurse -Force
