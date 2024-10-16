@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Changes in TIFF v4.6.0t &#8212; LibTIFF 4.6.0t documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Changes in TIFF v4.6.0" href="v4.6.0.html" />
+    <link rel="prev" title="Release history" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="v4.6.0.html" title="Changes in TIFF v4.6.0"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Release history"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">LibTIFF 4.6.0t documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Release history</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Changes in TIFF v4.6.0t</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="changes-in-tiff-v4-6-0t">
+<h1>Changes in TIFF v4.6.0t<a class="headerlink" href="#changes-in-tiff-v4-6-0t" title="Permalink to this headline">¶</a></h1>
+<table class="colwidths-auto docutils align-default" id="id1">
+<caption><span class="caption-text">References</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<tbody>
+<tr class="row-odd"><td><p>Current Version</p></td>
+<td><p><a class="reference internal" href="#"><span class="doc">v4.6.0t</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Previous Version</p></td>
+<td><p><a class="reference internal" href="v4.6.0.html"><span class="doc">v4.6.0</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Master Download Site</p></td>
+<td><p><a class="reference external" href="http://www.libtiff.org/downloads/">http://www.libtiff.org/downloads/</a></p></td>
+</tr>
+</tbody>
+</table>
+<p>This document provides a summary of significant changes made to the
+software between the <em>previous</em> and <em>current</em> versions (see
+above). A fully-detailed change summary is provided by the <code class="file docutils literal notranslate"><span class="pre">ChangeLog</span></code> file
+included in the release package and by the Git commit history:</p>
+<div class="section" id="major-changes">
+<h2>Major changes<a class="headerlink" href="#major-changes" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>This version fixes and restores all utilities and tool features that
+were removed or made unsupported in v4.6.0.</p>
+</div></blockquote>
+</div>
+<div class="section" id="minor-changes">
+<h2>Minor changes<a class="headerlink" href="#minor-changes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fix some build warnings and other build issues.</p></li>
+<li><p>Fix basic handling of some problematic TIFF input.</p></li>
+<li><p>Fix some documentation problems.</p></li>
+<li><p>Fix tiff2pdf OJPEG positioning and rendering problems.</p></li>
+<li><p>Fix fax2tiff output of extra row on EOFB.</p></li>
+<li><p>Fix tiff2pdf swapping of red and blue on RGB input.</p></li>
+<li><p>Fix memory leak on some G3/G4 input.</p></li>
+<li><p>Fix tiff2pdf from producing some broken PDFs.</p></li>
+<li><p>Correct rare operational mistake by TIFFFieldInfo.</p></li>
+<li><p>Avoid memory leak in TIFFCreateDirectory.</p></li>
+<li><p>Fix TIFFSetField from sometimes overwriting the last character.</p></li>
+<li><p>Fix some issues in library found through fuzzing.</p></li>
+<li><p>Fix a performance regression.</p></li>
+<li><p>Prevent some out-of-memory attacks.</p></li>
+<li><p>More…</p></li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Changes in TIFF v4.6.0t</a><ul>
+<li><a class="reference internal" href="#major-changes">Major changes</a></li>
+<li><a class="reference internal" href="#minor-changes">Minor changes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Release history</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="v4.6.0.html"
+                        title="next chapter">Changes in TIFF v4.6.0</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/releases/v4.6.0t.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="v4.6.0.html" title="Changes in TIFF v4.6.0"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Release history"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">LibTIFF 4.6.0t documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Release history</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Changes in TIFF v4.6.0t</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 1988-2022, LibTIFF contributors.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>
