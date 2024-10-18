@@ -26,6 +26,11 @@ $LibrarySet.Add("uriparser") > $null
 $LibrarySet.Add("cpp-httplib") > $null
 $LibrarySet.Add("nlohmann-json") > $null
 $LibrarySet.Add("sqlite") > $null
+$LibrarySet.Add("libwebp") > $null
+$LibrarySet.Add("proj") > $null
+$LibrarySet.Add("geos") > $null
+$LibrarySet.Add("gdal") > $null
+
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
 

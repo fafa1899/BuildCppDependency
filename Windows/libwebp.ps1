@@ -1,9 +1,7 @@
-
-
-param(  
-    # 在线地址：https://jaist.dl.sourceforge.net/project/libpng/libpng16/1.6.43/lpng1643.zip
-    [string]$SourceLocalPath = "../Source/lpng1643",
-    [string]$BuildDir = "./lpng1643",
+param(      
+    # 在线地址：https://chromium.googlesource.com/webm/libwebp/+/refs/tags/v1.3.2
+    [string]$SourceLocalPath = "../Source/libwebp-1.3.2",
+    [string]$BuildDir = "./libwebp-1.3.2",
     [string]$Generator,
     [string]$MSBuild,
     [string]$InstallDir,  
@@ -11,26 +9,27 @@ param(
 )
 
 # 检查目标文件是否存在，以判断是否安装
-$DstFilePath = "$InstallDir/bin/libpng16.dll"
+$DstFilePath = "$InstallDir/bin/libwebp.dll"
 if (Test-Path $DstFilePath) {
     Write-Output "The current library has been installed."
     exit 1
 } 
 
-# 创建所有依赖库的容器
+# 创建所有依赖库的容器：FBX、GDAL、CURL
 . "./BuildRequired.ps1"
-$Librarys = @("zlib")
+$Librarys = @("zlib", "libpng", "libjpeg", "libtiff", "giflib") 
 BuildRequired -Librarys $Librarys
 
 # 复制符号库
 $PdbFiles = @(
-    "$BuildDir/RelWithDebInfo/libpng16.pdb"
-) 
+    "$BuildDir/RelWithDebInfo/libwebp.pdb"
+)
 
 # 额外构建参数
 $CMakeCacheVariables = @{
-    PNG_TESTS = "OFF"
-    PNG_STATIC = "OFF"
+    WEBP_UNICODE      = "ON"
+    BUILD_SHARED_LIBS = "ON"
+    WEBP_LINK_STATIC  = "OFF"
 }
 
 # 调用通用构建脚本

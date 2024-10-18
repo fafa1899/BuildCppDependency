@@ -1,10 +1,10 @@
-param(   
-    [string]$SourceAddress = "https://codeload.github.com/libjpeg-turbo/libjpeg-turbo/zip/refs/tags/3.0.3",
-    [string]$SourceZipPath = "../Source/libjpeg-turbo-3.0.3.zip",
-    [string]$SourceLocalPath = "./libjpeg-turbo-3.0.3",
+param(      
+    # 在线地址：https://codeload.github.com/libjpeg-turbo/libjpeg-turbo/zip/refs/tags/3.0.3
+    [string]$SourceLocalPath = "../Source/libjpeg-turbo-3.0.3",
+    [string]$BuildDir = "./libjpeg-turbo-3.0.3",
     [string]$Generator,
     [string]$MSBuild,
-    [string]$InstallDir,
+    [string]$InstallDir,  
     [string]$SymbolDir 
 )
 
@@ -15,41 +15,23 @@ if (Test-Path $DstFilePath) {
     exit 1
 } 
 
-. "./DownloadAndUnzip.ps1"
+# 复制符号库
+$PdbFiles = @(
+    "$BuildDir/RelWithDebInfo/jpeg62.pdb",
+    "$BuildDir/RelWithDebInfo/turbojpeg.pdb"
+)
 
-DownloadAndUnzip -SourceLocalPath $SourceLocalPath -SourceZipPath $SourceZipPath -SourceAddress $SourceAddress
-
-# 清除旧的构建目录
-$BuildDir = $SourceLocalPath + "/build"  
-if (Test-Path $BuildDir) {
-    Remove-Item -Path $BuildDir -Recurse -Force
+# 额外构建参数
+$CMakeCacheVariables = @{
+    ENABLE_STATIC = "OFF"
 }
-New-Item -ItemType Directory -Path $BuildDir
 
-# 转到构建目录
-Push-Location $BuildDir
-
-try {
-    # 配置CMake  
-    cmake .. -G "$Generator" -A x64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="$InstallDir" -DENABLE_STATIC=off
-
-    # 构建阶段，指定构建类型
-    cmake --build . --config RelWithDebInfo
-
-    # 安装阶段，指定构建类型和安装目标
-    cmake --build . --config RelWithDebInfo --target install
-
-    # 复制符号库
-    $PdbFiles = @(
-        "./RelWithDebInfo/jpeg62.pdb",
-        "./RelWithDebInfo/turbojpeg.pdb"
-    ) 
-    foreach ($file in $PdbFiles) {  
-        Write-Output $file
-        Copy-Item -Path $file -Destination $SymbolDir
-    }    
-}
-finally {
-    # 返回原始工作目录
-    Pop-Location
-}
+# 调用通用构建脚本
+. ./cmake-build.ps1 -SourceLocalPath $SourceLocalPath `
+    -BuildDir $BuildDir `
+    -Generator $Generator `
+    -InstallDir $InstallDir `
+    -SymbolDir $SymbolDir `
+    -PdbFiles $PdbFiles `
+    -CMakeCacheVariables $CMakeCacheVariables `
+    -MultiConfig $false  

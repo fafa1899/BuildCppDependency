@@ -1,10 +1,10 @@
 param(        
-    [string]$SourceAddress = "http://www.libtiff.org/downloads/tiff-4.6.0t.zip",
-    [string]$SourceZipPath = "../Source/tiff-4.6.0t.zip",
-    [string]$SourceLocalPath = "./tiff-4.6.0t", 
+    # 在线地址：http://www.libtiff.org/downloads/tiff-4.6.0t.zip"
+    [string]$SourceLocalPath = "../Source/tiff-4.6.0t",
+    [string]$BuildDir = "./tiff-4.6.0t",
     [string]$Generator,
     [string]$MSBuild,
-    [string]$InstallDir,
+    [string]$InstallDir,  
     [string]$SymbolDir 
 )
 
@@ -17,50 +17,28 @@ if (Test-Path $DstFilePath) {
 
 # 创建所有依赖库的容器
 . "./BuildRequired.ps1"
-$Librarys = @("libjpeg")
+$Librarys = @("zlib", "libjpeg")
 BuildRequired -Librarys $Librarys
 
-#
-. "./DownloadAndUnzip.ps1"
-DownloadAndUnzip -SourceLocalPath $SourceLocalPath -SourceZipPath $SourceZipPath -SourceAddress $SourceAddress
+# 复制符号库
+$PdbFiles = @(
+    "$BuildDir/libtiff/RelWithDebInfo/tiff.pdb",
+    "$BuildDir/libtiff/RelWithDebInfo/tiffxx.pdb"
+) 
 
-# 清除旧的构建目录
-$BuildDir = $SourceLocalPath + "/build-dir"  
-if (Test-Path $BuildDir) {
-    Remove-Item -Path $BuildDir -Recurse -Force
+# 额外构建参数
+$CMakeCacheVariables = @{
+    "tiff-docs"    = "OFF"
+    "tiff-tests"   = "OFF"
+    "tiff-contrib" = "OFF" 
 }
-New-Item -ItemType Directory -Path $BuildDir
 
-# 转到构建目录
-Push-Location $BuildDir
-
-try {
-    # 配置CMake  
-    cmake .. -G "$Generator" -A x64 `
-        -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-        -DCMAKE_PREFIX_PATH="$InstallDir" `
-        -DCMAKE_INSTALL_PREFIX="$InstallDir" `
-        -Dtiff-docs=OFF `
-        -Dtiff-tests=OFF `
-        -Dtiff-contrib=OFF 
-
-    # 构建阶段，指定构建类型
-    cmake --build . --config RelWithDebInfo -- /m
-
-    # 安装阶段，指定构建类型和安装目标
-    cmake --build . --config RelWithDebInfo --target install
-
-    # 复制符号库
-    $PdbFiles = @(
-        "./libtiff/RelWithDebInfo/tiff.pdb",
-        "./libtiff/RelWithDebInfo/tiffxx.pdb"
-    ) 
-    foreach ($file in $PdbFiles) {  
-        Write-Output $file
-        Copy-Item -Path $file -Destination $SymbolDir
-    }     
-}
-finally {
-    # 返回原始工作目录
-    Pop-Location
-}
+# 调用通用构建脚本
+. ./cmake-build.ps1 -SourceLocalPath $SourceLocalPath `
+    -BuildDir $BuildDir `
+    -Generator $Generator `
+    -InstallDir $InstallDir `
+    -SymbolDir $SymbolDir `
+    -PdbFiles $PdbFiles `
+    -CMakeCacheVariables $CMakeCacheVariables `
+    -MultiConfig $false  

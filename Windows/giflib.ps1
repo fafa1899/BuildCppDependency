@@ -1,5 +1,6 @@
 param( 
     [string]$SourceLocalPath = "../Source/giflib-5.2.2",
+    [string]$BuildDir = "./giflib-5.2.2",
     [string]$Generator,
     [string]$MSBuild,
     [string]$InstallDir,
@@ -13,36 +14,20 @@ if (Test-Path $DstFilePath) {
     exit 1
 } 
 
-# 清除旧的构建目录
-$BuildDir = $SourceLocalPath + "/build"  
-if (Test-Path $BuildDir) {
-    Remove-Item -Path $BuildDir -Recurse -Force
-}
-New-Item -ItemType Directory -Path $BuildDir
+# 复制符号库
+$PdbFiles = @(
+    "$BuildDir/RelWithDebInfo/giflib.pdb"        
+) 
 
-# 转到构建目录
-Push-Location $BuildDir
+# 额外构建参数
+$CMakeCacheVariables = @{}
 
-try {
-    # 配置CMake  
-    cmake .. -G "$Generator" -A x64 -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo -DCMAKE_INSTALL_PREFIX="$InstallDir"
-
-    # 构建阶段，指定构建类型
-    cmake --build . --config RelWithDebInfo
-
-    # 安装阶段，指定构建类型和安装目标
-    cmake --build . --config RelWithDebInfo --target install
-
-    # # 复制符号库
-    $PdbFiles = @(
-        "./RelWithDebInfo/giflib.pdb"        
-    ) 
-    foreach ($file in $PdbFiles) {  
-        Write-Output $file
-        Copy-Item -Path $file -Destination $SymbolDir
-    }     
-}
-finally {
-    # 返回原始工作目录
-    Pop-Location
-}
+# 调用通用构建脚本
+. ./cmake-build.ps1 -SourceLocalPath $SourceLocalPath `
+    -BuildDir $BuildDir `
+    -Generator $Generator `
+    -InstallDir $InstallDir `
+    -SymbolDir $SymbolDir `
+    -PdbFiles $PdbFiles `
+    -CMakeCacheVariables $CMakeCacheVariables `
+    -MultiConfig $true  
