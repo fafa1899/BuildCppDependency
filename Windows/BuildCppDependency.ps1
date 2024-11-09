@@ -30,7 +30,8 @@ $LibrarySet.Add("libwebp") > $null
 $LibrarySet.Add("proj") > $null
 $LibrarySet.Add("geos") > $null
 $LibrarySet.Add("gdal") > $null
-
+$LibrarySet.Add("boost") > $null
+#$LibrarySet.Add("OpenMVG") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
 
