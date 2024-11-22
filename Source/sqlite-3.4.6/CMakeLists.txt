@@ -60,11 +60,12 @@ ENDIF()
 # 将源代码添加到此项目的可执行文件。
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 
-# 指定.def文件
-set_target_properties(${PROJECT_NAME} PROPERTIES
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")   
+    # 指定.def文件
+    set_target_properties(${PROJECT_NAME} PROPERTIES
     OUTPUT_NAME ${PROJECT_NAME}
-    LINK_FLAGS "/DEF:${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.def"
-)
+    LINK_FLAGS "/DEF:${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.def")
+endif()
 
 # TODO: 如有需要，请添加测试
 
