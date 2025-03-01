@@ -31,6 +31,10 @@ $LibrarySet.Add("proj") > $null
 $LibrarySet.Add("geos") > $null
 $LibrarySet.Add("gdal") > $null
 $LibrarySet.Add("boost") > $null
+$LibrarySet.Add("qwindowkit") > $null
+$LibrarySet.Add("SARibbon") > $null
+$LibrarySet.Add("tinyxml2") > $null
+
 #$LibrarySet.Add("OpenMVG") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
