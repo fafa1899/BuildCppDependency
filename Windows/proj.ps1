@@ -8,11 +8,11 @@ param(
 )
 
 # 检查目标文件是否存在，以判断是否安装
-#$DstFilePath = "$InstallDir/bin/turbojpeg.dll"
-#if (Test-Path $DstFilePath) {
-#    Write-Output "The current library has been installed."
-#    exit 1
-#} 
+$DstFilePath = "$InstallDir/bin/proj_9_4.dll"
+if (Test-Path $DstFilePath) {
+   Write-Output "The current library has been installed."
+   exit 1
+} 
 
 # 创建所有依赖库的容器
 . "./BuildRequired.ps1"
