@@ -1,11 +1,21 @@
-param(   
-    [string]$SourceLocalPath = "../Source/json-3.11.3",
-    [string]$BuildDir = "./json-3.11.3",
+param(    
+    [string]$Name = "json-3.11.3",
+    [string]$SourceDir = "../Source",
     [string]$Generator,
     [string]$MSBuild,
     [string]$InstallDir,  
     [string]$SymbolDir 
 )
+
+# 根据 $Name 动态构建路径
+$zipFilePath = Join-Path -Path $SourceDir -ChildPath "$Name.zip"
+$SourcePath = Join-Path -Path $SourceDir -ChildPath $Name
+$BuildDir = Join-Path -Path "." -ChildPath $Name
+
+# 解压ZIP文件到指定目录
+if (!(Test-Path $SourcePath)) {
+    Expand-Archive -LiteralPath $zipFilePath -DestinationPath $SourceDir -Force
+}
 
 # 检查目标文件是否存在，以判断是否安装
 $DstFilePath = "$InstallDir/include/nlohmann/json.hpp"
@@ -14,27 +24,17 @@ if (Test-Path $DstFilePath) {
     exit 1
 } 
 
-# 清除旧的构建目录
-if (Test-Path $BuildDir) {
-    Remove-Item -Path $BuildDir -Recurse -Force
+# 额外构建参数
+$CMakeCacheVariables = @{
+    JSON_BuildTests = "OFF"
 }
-New-Item -ItemType Directory -Path $BuildDir
 
-# 配置CMake  
-cmake $SourceLocalPath `
-    -B "$BuildDir" `
-    -G "$Generator" `
-    -A x64 `
-    -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo `
-    -DCMAKE_PREFIX_PATH="$InstallDir" `
-    -DCMAKE_INSTALL_PREFIX="$InstallDir" `
-    -DJSON_BuildTests=off
-   
-# 构建阶段，指定构建类型
-cmake --build $BuildDir --config RelWithDebInfo
-
-# 安装阶段，指定构建类型和安装目标
-cmake --build $BuildDir --config RelWithDebInfo --target install
-
-# 清理构建目录
-Remove-Item -Path $BuildDir -Recurse -Force
+# 调用通用构建脚本
+. ./cmake-build.ps1 -SourceLocalPath $SourcePath `
+    -BuildDir $BuildDir `
+    -Generator $Generator `
+    -InstallDir $InstallDir `
+    -SymbolDir $SymbolDir `
+    -PdbFiles $PdbFiles `
+    -CMakeCacheVariables $CMakeCacheVariables `
+    -MultiConfig $true      
