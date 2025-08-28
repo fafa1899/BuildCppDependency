@@ -1,19 +1,14 @@
 #!/bin/bash
 
-# 加载环境变量文件
 source /etc/environment
 
-#
-GENERATOR=""
-Generator=""
+# 默认值
+Generator="Unix Makefiles"
+InstallDir=""
 
-# 解析命令行参数
+# 解析参数
 while [[ $# -gt 0 ]]; do
   case $1 in
-    -generator)
-      Generator="$2"
-      shift 2
-      ;;
     -installdir)
       InstallDir="$2"
       shift 2
@@ -29,57 +24,28 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-echo $GENERATOR
-echo $INSTALL_DIR
-
-# 定义变量
+# 项目配置
 Name="json-3.11.3"
 SourceDir="../Source"
-
-# 动态构建路径
 ZipFilePath="${SourceDir}/${Name}.zip"
-SourcePath="${SourceDir}/${Name}"
 BuildDir="./${Name}"
-
-# 检查源码目录是否存在，不存在则解压
-if [ ! -d "$SourcePath" ]; then
-    echo "源码目录 $SourcePath 不存在，正在从 $ZipFilePath 解压..."
-
-    # 检查 zip 文件是否存在
-    if [ ! -f "$ZipFilePath" ]; then
-        echo "错误：ZIP 文件不存在：$ZipFilePath"
-        exit 1
-    fi
-
-    # 使用 unzip 解压
-    unzip -q "$ZipFilePath" -d "$SourceDir"
-
-    # 检查是否成功解压出目录
-    if [ ! -d "$SourcePath" ]; then
-        echo "错误：解压后仍未找到目录 $SourcePath，可能 ZIP 内部结构不同。"
-        exit 1
-    fi
-
-    echo "✅ 成功解压 $NAME 到 $SourcePath"
-else
-    echo "源码目录已存在：$SourcePath，跳过解压。"
-fi
-
-
 CMakeArgs="-DJSON_BuildTests=OFF"
 
-# 调用 build.sh 脚本
+# 调用通用解压脚本
+chmod +x ./extract-source.sh
+source_result=$(./extract-source.sh "$ZipFilePath" "$SourceDir" "$Name")
+SourcePath=$(echo "$source_result" | grep "SOURCE_PATH=" | cut -d= -f2)
+
+if [ -z "$SourcePath" ]; then
+    echo "❌ 解压失败，无法获取 SourcePath"
+    exit 1
+fi
+
+# 执行构建
 chmod +x ./cmake-build.sh
 ./cmake-build.sh "$SourcePath" "$BuildDir" "$Generator" "$InstallDir" "$CMakeArgs"
 
-# 删除源码目录和构建目录
+# 清理
 echo "正在清理目录..."
-if [ -d "$SourcePath" ]; then
-    rm -rf "$SourcePath"
-    echo "已删除源码目录: $SourcePath"
-fi
-
-if [ -d "$BuildDir" ]; then
-    rm -rf "$BuildDir"
-    echo "已删除构建目录: $BuildDir"
-fi
+rm -rf "$SourcePath" && echo "已删除源码目录: $SourcePath"
+rm -rf "$BuildDir" && echo "已删除构建目录: $BuildDir"

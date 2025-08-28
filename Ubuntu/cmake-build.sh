@@ -24,7 +24,7 @@ cmake "$SourceLocalPath" \
     $CMakeArgs
 
 # 构建阶段，指定构建类型
-cmake --build "$BuildDir" --config RelWithDebInfo --parallel 4
+cmake --build "$BuildDir" --config RelWithDebInfo --parallel
 
 # 安装阶段，指定构建类型和安装目标
 cmake --build "$BuildDir" --config RelWithDebInfo --target install

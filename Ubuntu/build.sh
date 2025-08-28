@@ -11,7 +11,6 @@
 # 默认参数
 INSTALL=""
 LIST=""
-GENERATOR="Unix Makefiles"
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
@@ -56,6 +55,9 @@ fi
 # 定义库集合（SortedSet 替代：使用数组 + sort）
 declare -a LIBRARY_SET=(
     "nlohmann-json" 
+    "cpp-httplib"
+    "OpenSSL"
+    "sqlite"
 )
 
 # 转换为小写比较函数
@@ -90,7 +92,7 @@ if [ -n "$INSTALL" ]; then
                 BUILD_SCRIPT="./${INSTALL}.sh"
                 if [ -f "$BUILD_SCRIPT" ]; then
                     chmod +x "$BUILD_SCRIPT"
-                    "$BUILD_SCRIPT" -generator "$GENERATOR" -installdir "$INSTALL_DIR"                                        
+                    "$BUILD_SCRIPT" -installdir "$INSTALL_DIR"                                        
                 else
                     echo "错误: 找不到构建脚本 $BUILD_SCRIPT"
                     exit 1
