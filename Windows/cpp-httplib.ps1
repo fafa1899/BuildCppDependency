@@ -25,7 +25,10 @@ if (Test-Path $DstFilePath) {
 } 
 
 # 额外构建参数
-$CMakeCacheVariables = @{}
+$CMakeCacheVariables = @{
+    HTTPLIB_REQUIRE_ZSTD = "OFF"
+    HTTPLIB_USE_ZSTD_IF_AVAILABLE = "OFF"
+}
 
 # 调用通用构建脚本
 . ./cmake-build.ps1 -SourceLocalPath $SourcePath `
