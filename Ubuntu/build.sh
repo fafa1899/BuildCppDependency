@@ -58,6 +58,8 @@ declare -a LIBRARY_SET=(
     "cpp-httplib"
     "OpenSSL"
     "sqlite"
+    "boost"
+    "magic_enum"
 )
 
 # 转换为小写比较函数
