@@ -60,6 +60,9 @@ declare -a LIBRARY_SET=(
     "sqlite"
     "boost"
     "magic_enum"
+    "eigen"
+    "uriparser"
+    "libsodium"
 )
 
 # 转换为小写比较函数

@@ -46,6 +46,9 @@ make -j$(nproc)
 
 make install -j$(nproc)
 
+# 回到之前的目录
+cd -
+
 # 清理
 echo "正在清理目录..."
 rm -rf "$SourcePath" && echo "已删除源码目录: $SourcePath"
