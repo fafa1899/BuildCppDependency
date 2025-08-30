@@ -4,7 +4,9 @@ param(
     [string]$InstallDir,
     [string]$SymbolDir,   
     [string]$Install,   
-    [string]$List
+    [string]$List,
+    [bool]$Force = $false,        # 是否强制重新构建
+    [bool]$Cleanup = $true        # 是否在构建完成后删除源码和构建目录
 )
 
 # 创建所有的库的容器
@@ -34,6 +36,11 @@ $LibrarySet.Add("boost") > $null
 $LibrarySet.Add("qwindowkit") > $null
 $LibrarySet.Add("SARibbon") > $null
 $LibrarySet.Add("tinyxml2") > $null
+$LibrarySet.Add("magic_enum") > $null
+$LibrarySet.Add("libxml2") > $null
+$LibrarySet.Add("libexpat") > $null
+$LibrarySet.Add("c-ares") > $null
+$LibrarySet.Add("curl") > $null
 
 #$LibrarySet.Add("OpenMVG") > $null
 #$LibrarySet.Add("protobuf") > $null
@@ -48,7 +55,7 @@ if ($PSBoundParameters.ContainsKey('Install')) {
             Write-Output "Find the library named $item and start installing..."        
             # 动态构建脚本文件名并执行
             $BuildScript = "./$item.ps1";           
-            & $BuildScript -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
+            & $BuildScript -Generator $Generator -InstallDir $InstallDir -SymbolDir $SymbolDir -Force $Force -Cleanup $Cleanup
         }
     }
     else {
@@ -57,7 +64,7 @@ if ($PSBoundParameters.ContainsKey('Install')) {
             Write-Output "Find the library named $Install and start installing..."        
             # 动态构建脚本文件名并执行
             $BuildScript = "./$Install.ps1";           
-            & $BuildScript -Generator $Generator -MSBuild $MSBuild -InstallDir $InstallDir -SymbolDir $SymbolDir
+            & $BuildScript -Generator $Generator -InstallDir $InstallDir -SymbolDir $SymbolDir -Force $Force -Cleanup $Cleanup
         }
         else {
             Write-Output "Cannot find library named $Install !"

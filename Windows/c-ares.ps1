@@ -1,6 +1,6 @@
-# zlib.ps1
+# build-cares.ps1
 param(    
-    [string]$Name = "zlib-1.3.1",
+    [string]$Name = "c-ares-1.34.5",
     [string]$SourceDir = "../Source",
     [string]$Generator,
     [string]$InstallDir,  
@@ -9,19 +9,11 @@ param(
     [bool]$Cleanup = $true        # 是否在构建完成后删除源码和构建目录
 )
 
-# 目标文件
-$DllPath = "$InstallDir/bin/zlib.dll"
+$DllPath = "$InstallDir/bin/cares.dll"
 
-# 符号库文件
-$PdbFiles = @(
-    "RelWithDebInfo/zlib.pdb",
-    "RelWithDebInfo/zlibstatic.pdb"
-)  
+$PdbFiles = @("bin/RelWithDebInfo/cares.pdb")
 
-# 额外构建参数
-$CMakeCacheVariables = @{
-    ZLIB_BUILD_EXAMPLES = "OFF"
-}
+$CMakeCacheVariables = @{}
 
 . ./build-common.ps1 -Name $Name `
     -SourceDir $SourceDir `
