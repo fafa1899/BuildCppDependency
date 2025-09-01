@@ -63,6 +63,7 @@ declare -a LIBRARY_SET=(
     "eigen"
     "uriparser"
     "libsodium"
+    "zlib"
 )
 
 # 转换为小写比较函数
