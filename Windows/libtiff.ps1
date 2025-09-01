@@ -1,44 +1,48 @@
-param(        
-    # 在线地址：http://www.libtiff.org/downloads/tiff-4.6.0t.zip"
-    [string]$SourceLocalPath = "../Source/tiff-4.6.0t",
-    [string]$BuildDir = "./tiff-4.6.0t",
+# libtiff.ps1
+param(    
+    [string]$Name = "tiff-4.6.0t",
+    [string]$SourceDir = "../Source",
     [string]$Generator,
-    [string]$MSBuild,
     [string]$InstallDir,  
-    [string]$SymbolDir 
+    [string]$SymbolDir,  
+    [bool]$Force = $false,        # 是否强制重新构建
+    [bool]$Cleanup = $true        # 是否在构建完成后删除源码和构建目录
 )
 
-# 检查目标文件是否存在，以判断是否安装
-$DstFilePath = "$InstallDir/bin/tiff.dll"
-if (Test-Path $DstFilePath) {
-    Write-Output "The current library has been installed."
-    exit 1
-} 
+# 目标文件
+$DllPath = "$InstallDir/bin/tiff.dll"
 
-# 创建所有依赖库的容器
-. "./BuildRequired.ps1"
-$Librarys = @("zlib", "libjpeg")
-BuildRequired -Librarys $Librarys
+# 依赖库数组
+$Librarys = @("zlib", "libjpeg")  
 
-# 复制符号库
+# 符号库文件
 $PdbFiles = @(
-    "$BuildDir/libtiff/RelWithDebInfo/tiff.pdb",
-    "$BuildDir/libtiff/RelWithDebInfo/tiffxx.pdb"
+    "libtiff/RelWithDebInfo/tiff.pdb",
+    "libtiff/RelWithDebInfo/tiffxx.pdb"
 ) 
 
 # 额外构建参数
 $CMakeCacheVariables = @{
-    "tiff-docs"    = "OFF"
-    "tiff-tests"   = "OFF"
-    "tiff-contrib" = "OFF" 
+    libdeflate    = "OFF"
+    lzma          = "OFF"
+    lerc          = "OFF"
+    zstd          = "OFF"
+    webp          = "OFF"
+    "tiff-opengl" = "OFF"
+    "tiff-docs"   = "OFF"
+    "tiff-tests"  = "OFF"
+    "tiff-contrib"= "OFF" 
 }
 
-# 调用通用构建脚本
-. ./cmake-build.ps1 -SourceLocalPath $SourceLocalPath `
-    -BuildDir $BuildDir `
-    -Generator $Generator `
+. ./build-common.ps1 -Name $Name `
+    -SourceDir $SourceDir `
     -InstallDir $InstallDir `
     -SymbolDir $SymbolDir `
+    -Generator $Generator `
+    -TargetDll $DllPath `
     -PdbFiles $PdbFiles `
     -CMakeCacheVariables $CMakeCacheVariables `
-    -MultiConfig $false  
+    -MultiConfig $false `
+    -Force $Force `
+    -Cleanup $Cleanup `
+    -Librarys $Librarys

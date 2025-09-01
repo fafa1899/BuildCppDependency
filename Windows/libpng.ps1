@@ -12,7 +12,8 @@ param(
 # 目标文件
 $DllPath = "$InstallDir/bin/libpng16.dll"
 
-$Librarys = @("zlib")  # 依赖库数组
+# 依赖库数组
+$Librarys = @("zlib")  
 
 # 符号库文件
 $PdbFiles = @(
