@@ -40,6 +40,7 @@ $LibrarySet.Add("magic_enum") > $null
 $LibrarySet.Add("libxml2") > $null
 $LibrarySet.Add("libexpat") > $null
 $LibrarySet.Add("c-ares") > $null
+$LibrarySet.Add("openssl") > $null
 $LibrarySet.Add("curl") > $null
 
 #$LibrarySet.Add("OpenMVG") > $null

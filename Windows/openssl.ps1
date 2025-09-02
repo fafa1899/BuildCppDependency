@@ -12,7 +12,7 @@ param(
 $TargetDll = "$InstallDir/bin/libssl-3-x64.dll"
 if (-not $Force -and $TargetDll -and (Test-Path $TargetDll)) {
     Write-Output "Library already installed: $TargetDll"
-    #exit 0
+    exit 0
 }
 
 # 动态路径构建
