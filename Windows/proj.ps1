@@ -1,27 +1,23 @@
-param(     
-    [string]$SourceLocalPath = "../Source/proj-9.4.1",
-    [string]$BuildDir = "./proj-9.4.1",
+# proj.ps1
+param(    
+    [string]$Name = "proj-9.4.1",
+    [string]$SourceDir = "../Source",
     [string]$Generator,
-    [string]$MSBuild,
     [string]$InstallDir,  
-    [string]$SymbolDir 
+    [string]$SymbolDir,  
+    [bool]$Force = $false,        # 是否强制重新构建
+    [bool]$Cleanup = $true        # 是否在构建完成后删除源码和构建目录
 )
 
-# 检查目标文件是否存在，以判断是否安装
-$DstFilePath = "$InstallDir/bin/proj_9_4.dll"
-if (Test-Path $DstFilePath) {
-   Write-Output "The current library has been installed."
-   exit 1
-} 
+# 目标文件
+$DllPath = "$InstallDir/bin/proj_9_4.dll"
 
-# 创建所有依赖库的容器
-. "./BuildRequired.ps1"
+# 依赖库数组
 $Librarys = @("nlohmann-json", "sqlite", "libtiff")
-BuildRequired -Librarys $Librarys
 
-# 复制符号库
+# 符号库文件
 $PdbFiles = @(
-    "$BuildDir/bin/RelWithDebInfo/proj_9_4.pdb"      
+    "bin/RelWithDebInfo/proj_9_4.pdb"      
 ) 
 
 # 额外构建参数
@@ -31,12 +27,15 @@ $CMakeCacheVariables = @{
     BUILD_PROJSYNC = "OFF"
 }
 
-# 调用通用构建脚本
-. ./cmake-build.ps1 -SourceLocalPath $SourceLocalPath `
-    -BuildDir $BuildDir `
-    -Generator $Generator `
+. ./build-common.ps1 -Name $Name `
+    -SourceDir $SourceDir `
     -InstallDir $InstallDir `
     -SymbolDir $SymbolDir `
+    -Generator $Generator `
+    -TargetDll $DllPath `
     -PdbFiles $PdbFiles `
     -CMakeCacheVariables $CMakeCacheVariables `
-    -MultiConfig $false  
+    -MultiConfig $false `
+    -Force $Force `
+    -Cleanup $Cleanup `
+    -Librarys $Librarys
