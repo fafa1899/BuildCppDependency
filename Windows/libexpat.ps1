@@ -10,7 +10,6 @@ param(
 # 根据 $Name 动态构建路径
 $zipFilePath = Join-Path -Path $SourceDir -ChildPath "$Name.zip"
 $SourcePath = Join-Path -Path $SourceDir -ChildPath $Name
-$SourcePath = Join-Path -Path $SourcePath -ChildPath "expat"
 $BuildDir = Join-Path -Path "." -ChildPath $Name
 
 # 检查是否已经安装（通过目标 DLL）
@@ -49,8 +48,9 @@ $CMakeCacheVariables = @{
 }
 
 # 调用通用 CMake 构建脚本
+$cmakeSourcePath = Join-Path -Path $SourcePath -ChildPath "expat"
 Write-Output "Starting build for $Name..."
-. ./cmake-build.ps1 -SourceLocalPath $SourcePath `
+. ./cmake-build.ps1 -SourceLocalPath $cmakeSourcePath `
     -BuildDir $BuildDir `
     -Generator $Generator `
     -InstallDir $InstallDir `

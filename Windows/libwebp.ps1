@@ -1,28 +1,23 @@
-param(      
-    # 在线地址：https://chromium.googlesource.com/webm/libwebp/+/refs/tags/v1.3.2
-    [string]$SourceLocalPath = "../Source/libwebp-1.3.2",
-    [string]$BuildDir = "./libwebp-1.3.2",
+# libwebp.ps1
+param(    
+    [string]$Name = "libwebp-1.3.2",
+    [string]$SourceDir = "../Source",
     [string]$Generator,
-    [string]$MSBuild,
     [string]$InstallDir,  
-    [string]$SymbolDir 
+    [string]$SymbolDir,  
+    [bool]$Force = $false,        # 是否强制重新构建
+    [bool]$Cleanup = $true        # 是否在构建完成后删除源码和构建目录
 )
 
-# 检查目标文件是否存在，以判断是否安装
-$DstFilePath = "$InstallDir/bin/libwebp.dll"
-if (Test-Path $DstFilePath) {
-    Write-Output "The current library has been installed."
-    exit 1
-} 
+# 目标文件
+$DllPath = "$InstallDir/bin/libwebp.dll"
 
-# 创建所有依赖库的容器：FBX、GDAL、CURL
-. "./BuildRequired.ps1"
+# 依赖库数组
 $Librarys = @("zlib", "libpng", "libjpeg", "libtiff", "giflib") 
-BuildRequired -Librarys $Librarys
 
-# 复制符号库
+# 符号库文件
 $PdbFiles = @(
-    "$BuildDir/RelWithDebInfo/libwebp.pdb"
+    "RelWithDebInfo/libwebp.pdb"
 )
 
 # 额外构建参数
@@ -32,12 +27,15 @@ $CMakeCacheVariables = @{
     WEBP_LINK_STATIC  = "OFF"
 }
 
-# 调用通用构建脚本
-. ./cmake-build.ps1 -SourceLocalPath $SourceLocalPath `
-    -BuildDir $BuildDir `
-    -Generator $Generator `
+. ./build-common.ps1 -Name $Name `
+    -SourceDir $SourceDir `
     -InstallDir $InstallDir `
     -SymbolDir $SymbolDir `
+    -Generator $Generator `
+    -TargetDll $DllPath `
     -PdbFiles $PdbFiles `
     -CMakeCacheVariables $CMakeCacheVariables `
-    -MultiConfig $false  
+    -MultiConfig $false `
+    -Force $Force `
+    -Cleanup $Cleanup `
+    -Librarys $Librarys
