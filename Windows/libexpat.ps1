@@ -4,7 +4,9 @@ param(
     [string]$Generator,
     [string]$MSBuild,
     [string]$InstallDir,  
-    [string]$SymbolDir 
+    [string]$SymbolDir,
+    [bool]$Force = $false,        # 是否强制重新构建
+    [bool]$Cleanup = $true        # 是否在构建完成后删除源码和构建目录 
 )
 
 # 根据 $Name 动态构建路径
