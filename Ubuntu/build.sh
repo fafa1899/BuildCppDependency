@@ -63,6 +63,8 @@ fi
 declare -a LIBRARY_SET=(
     "zlib"
     "libpng"
+    "libjpeg"
+    "libtiff"
     "nlohmann-json" 
     "cpp-httplib"
     "OpenSSL"

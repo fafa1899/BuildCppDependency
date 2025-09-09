@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===========================================
-# libjpeg.sh - 构建 libjpeg 库
+# libtiff.sh - 构建 libtiff 库
 # 接收参数：
 #   -installdir <dir>
 #   -force
@@ -43,17 +43,19 @@ while [[ $# -gt 0 ]]; do
 done
 
 # 项目配置
-Name="libjpeg-turbo-3.0.3"
+Name="tiff-4.6.0t"
 ZipFileName="${Name}.zip"
 SourceDir="../Source"
 BuildDir="./${Name}"
 
-CMakeArgs="-DENABLE_STATIC=OFF"
-TargetFile="${InstallDir}/lib/libturbojpeg.so"
+CMakeArgs="-Dlibdeflate=OFF -Dlzma=OFF -Dlerc=OFF -Dzstd=OFF -Dwebp=OFF -Dtiff-opengl=OFF -Dtiff-docs=OFF -Dtiff-tests=OFF -Dtiff-contrib=OFF"
+TargetFile="${InstallDir}/lib/libtiff.so"
+
 
 # 组装要传递给 build-common.sh 的参数
 common_args=()
 common_args+=("-installdir" "$InstallDir")
+common_args+=("-requiredlibs" "zlib")
 if [ "$FORCE" = true ]; then
   common_args+=("-force")
 fi
