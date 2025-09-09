@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===========================================
-# zlib.sh - 构建 zlib 库
+# libpng.sh - 构建 libpng 库
 # 接收参数：
 #   -installdir <dir>
 #   -force
@@ -43,16 +43,18 @@ while [[ $# -gt 0 ]]; do
 done
 
 # 项目配置
-Name="zlib-1.3.1"
+Name="libpng-1.6.43"
 ZipFileName="${Name}.zip"
 SourceDir="../Source"
 BuildDir="./${Name}"
-CMakeArgs="-DZLIB_BUILD_EXAMPLES=OFF"
-TargetFile="${InstallDir}/lib/libz.so"
+
+CMakeArgs="-DPNG_TESTS=OFF -DPNG_STATIC=OFF"
+TargetFile="${InstallDir}/lib/libpng16.so"
 
 # 组装要传递给 build-common.sh 的参数
 common_args=()
 common_args+=("-installdir" "$InstallDir")
+common_args+=("-requiredlibs" "zlib")
 if [ "$FORCE" = true ]; then
   common_args+=("-force")
 fi

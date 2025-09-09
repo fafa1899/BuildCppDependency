@@ -4,13 +4,16 @@
 # build.sh - Ubuntu 构建调度脚本
 # 功能：安装或列出第三方库
 # 用法：
-#   ./build.sh -install <libname|all>
+#   ./build.sh -install <libname|all> [-installdir <dir>] [-force] [-noclean]
 #   ./build.sh -list all
 # ===========================================
 
 # 默认参数
 INSTALL=""
 LIST=""
+FORCE=false
+NOClean=false
+INSTALL_DIR=""
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
@@ -27,9 +30,13 @@ while [[ $# -gt 0 ]]; do
       INSTALL_DIR="$2"
       shift 2
       ;;
-    -symboldir)
-      SYMBOL_DIR="$2"
-      shift 2
+    -force)
+      FORCE=true
+      shift
+      ;;
+    -noclean)
+      NOClean=true
+      shift
       ;;
     -*)
       echo "未知参数: $1"
@@ -52,8 +59,10 @@ if [ -z "$eGova3rdParty" ]; then
     exit 1
 fi
 
-# 定义库集合（SortedSet 替代：使用数组 + sort）
+# 定义库集合
 declare -a LIBRARY_SET=(
+    "zlib"
+    "libpng"
     "nlohmann-json" 
     "cpp-httplib"
     "OpenSSL"
@@ -63,26 +72,37 @@ declare -a LIBRARY_SET=(
     "eigen"
     "uriparser"
     "libsodium"
-    "zlib"
 )
 
-# 转换为小写比较函数
+# 转换为小写
 to_lower() {
     echo "$1" | tr '[:upper:]' '[:lower:]'
 }
+
+# 构造公共参数数组（传递给子脚本）
+build_args=()
+if [ -n "$INSTALL_DIR" ]; then
+  build_args+=("-installdir" "$INSTALL_DIR")
+fi
+if [ "$FORCE" = true ]; then
+  build_args+=("-force")
+fi
+if [ "$NOClean" = true ]; then
+  build_args+=("-noclean")
+fi
 
 # 检查是否提供了 -install 参数
 if [ -n "$INSTALL" ]; then
     INSTALL_LOWER=$(to_lower "$INSTALL")
 
-    if [ "$INSTALL_LOWER" = "-all" ] || [ "$INSTALL_LOWER" = "all" ]; then
+    if [ "$INSTALL_LOWER" = "all" ] || [ "$INSTALL_LOWER" = "-all" ]; then
         echo "即将安装所有库..."
         for item in "${LIBRARY_SET[@]}"; do
             echo "正在查找并安装库: $item"
             BUILD_SCRIPT="./${item}.sh"
             if [ -f "$BUILD_SCRIPT" ]; then
-                chmod +x "$BUILD_SCRIPT"  # 确保有执行权限
-                "$BUILD_SCRIPT" -generator "$GENERATOR" -installdir "$INSTALL_DIR"       
+                chmod +x "$BUILD_SCRIPT"
+                "$BUILD_SCRIPT" "${build_args[@]}"
             else
                 echo "错误: 找不到构建脚本 $BUILD_SCRIPT"
                 exit 1
@@ -98,7 +118,7 @@ if [ -n "$INSTALL" ]; then
                 BUILD_SCRIPT="./${INSTALL}.sh"
                 if [ -f "$BUILD_SCRIPT" ]; then
                     chmod +x "$BUILD_SCRIPT"
-                    "$BUILD_SCRIPT" -installdir "$INSTALL_DIR"                                        
+                    "$BUILD_SCRIPT" "${build_args[@]}"
                 else
                     echo "错误: 找不到构建脚本 $BUILD_SCRIPT"
                     exit 1
@@ -126,8 +146,8 @@ elif [ -n "$LIST" ]; then
 else
     echo "请提供参数！"
     echo "用法示例："
-    echo "  ./build.sh -install all"
-    echo "  ./build.sh -install opencv"
+    echo "  ./build.sh -install all -installdir /opt/3rdparty -force -noclean"
+    echo "  ./build.sh -install opencv -installdir /opt/3rdparty"
     echo "  ./build.sh -list all"
     exit 1
 fi
