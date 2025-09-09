@@ -1,6 +1,6 @@
 # libpng.ps1
 param(    
-    [string]$Name = "lpng1643",
+    [string]$Name = "libpng-1.6.43",
     [string]$SourceDir = "../Source",
     [string]$Generator,
     [string]$InstallDir,  
