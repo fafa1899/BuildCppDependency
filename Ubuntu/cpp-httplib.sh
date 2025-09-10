@@ -1,52 +1,69 @@
 #!/bin/bash
 
-source /etc/environment
+# ===========================================
+# eigen.sh - 构建 eigen 库
+# 接收参数：
+#   -installdir <dir>
+#   -force
+#   -noclean
+# ===========================================
 
 # 默认值
-Generator="Unix Makefiles"
 InstallDir=""
+FORCE=false
+NOClean=false
 
-# 解析参数
+# 解析可选参数
 while [[ $# -gt 0 ]]; do
   case $1 in
-
     -installdir)
       InstallDir="$2"
       shift 2
+      ;;
+    -force)
+      FORCE=true
+      shift
+      ;;
+    -noclean)
+      NOClean=true
+      shift
+      ;;
+    --) # 分隔符，后面是项目参数
+      shift
+      break
       ;;
     -*)
       echo "未知参数: $1"
       exit 1
       ;;
     *)
-      echo "无效参数: $1"
-      exit 1
+      break  # 非选项参数开始，停止解析
       ;;
   esac
 done
 
 # 项目配置
 Name="cpp-httplib-0.25.0"
+ZipFileName="${Name}.zip"
 SourceDir="../Source"
-ZipFilePath="${SourceDir}/${Name}.zip"
 BuildDir="./${Name}"
-CMakeArgs=""
 
-# 调用通用解压脚本
-chmod +x ./extract-source.sh
-source_result=$(./extract-source.sh "$ZipFilePath" "$SourceDir" "$Name")
-SourcePath=$(echo "$source_result" | grep "SOURCE_PATH=" | cut -d= -f2)
+CMakeArgs="-DHTTPLIB_REQUIRE_ZSTD=OFF -DHTTPLIB_USE_ZSTD_IF_AVAILABLE=OFF"
+TargetFile="${InstallDir}/include/httplib.h"
 
-if [ -z "$SourcePath" ]; then
-    echo "❌ 解压失败，无法获取 SourcePath"
-    exit 1
+# 组装要传递给 build-common.sh 的参数
+common_args=()
+common_args+=("-installdir" "$InstallDir")
+if [ "$FORCE" = true ]; then
+  common_args+=("-force")
+fi
+if [ "$NOClean" = true ]; then
+  common_args+=("-noclean")
 fi
 
-# 执行构建
-chmod +x ./cmake-build.sh
-./cmake-build.sh "$SourcePath" "$BuildDir" "$Generator" "$InstallDir" "$CMakeArgs"
-
-# 清理
-echo "正在清理目录..."
-rm -rf "$SourcePath" && echo "已删除源码目录: $SourcePath"
-rm -rf "$BuildDir" && echo "已删除构建目录: $BuildDir"
+# 调用通用脚本
+chmod +x ./build-common.sh
+./build-common.sh \
+  "${common_args[@]}" \
+  -- \
+  "$Name" "$ZipFileName" "$SourceDir" "$BuildDir" "$CMakeArgs" "$TargetFile"

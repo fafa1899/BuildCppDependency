@@ -69,9 +69,9 @@ declare -a LIBRARY_SET=(
     "freetype"
     "eigen"
     "uriparser"
-    "nlohmann-json" 
     "cpp-httplib"
-    "OpenSSL"
+    "nlohmann-json" 
+ 
     "sqlite"
     "boost"
     "magic_enum"
