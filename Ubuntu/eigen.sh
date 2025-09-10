@@ -48,7 +48,7 @@ ZipFileName="${Name}.zip"
 SourceDir="../Source"
 BuildDir="./${Name}"
 
-CMakeArgs=""
+CMakeArgs="-DBUILD_TESTING=OFF"
 TargetFile="${InstallDir}/include/eigen3/Eigen/Eigen"
 
 # 组装要传递给 build-common.sh 的参数
