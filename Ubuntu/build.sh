@@ -76,6 +76,8 @@ declare -a LIBRARY_SET=(
     "eigen"
     "uriparser"
     "c-ares"
+    "openssl"
+    "curl"
     "libsodium"    
 )
 
