@@ -75,7 +75,8 @@ declare -a LIBRARY_SET=(
     "magic_enum"
     "eigen"
     "uriparser"
-    "libsodium"
+    "c-ares"
+    "libsodium"    
 )
 
 # 转换为小写
