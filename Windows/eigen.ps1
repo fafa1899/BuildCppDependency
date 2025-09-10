@@ -1,48 +1,37 @@
-param( 
-    [string]$SourceAddress = "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip",
-    [string]$SourceZipPath = "../Source/eigen-3.4.0.zip",
-    [string]$SourceLocalPath = "./eigen-3.4.0",
+# libtiff.ps1
+param(    
+    [string]$Name = "eigen-3.4.0",
+    [string]$SourceDir = "../Source",
     [string]$Generator,
-    [string]$MSBuild,
     [string]$InstallDir,  
-    [string]$SymbolDir 
+    [string]$SymbolDir,  
+    [bool]$Force = $false,        # 是否强制重新构建
+    [bool]$Cleanup = $true        # 是否在构建完成后删除源码和构建目录
 )
 
-# 检查目标文件是否存在，以判断是否安装
-$DstFilePath = "$InstallDir/include/eigen3/Eigen/Eigen"
-if (Test-Path $DstFilePath) {
-    Write-Output "The current library has been installed."
-    exit 1
-} 
+# 目标文件
+$DllPath = "$InstallDir/include/eigen3/Eigen/Eigen"
 
-. "./DownloadAndUnzip.ps1"
-DownloadAndUnzip -SourceLocalPath $SourceLocalPath -SourceZipPath $SourceZipPath -SourceAddress $SourceAddress
+# 依赖库数组
+$Librarys = @()  
 
-# 清除旧的构建目录
-$BuildDir = $SourceLocalPath + "/build"  
-if (Test-Path $BuildDir) {
-    Remove-Item -Path $BuildDir -Recurse -Force
+# 符号库文件
+$PdbFiles = @() 
+
+# 额外构建参数
+$CMakeCacheVariables = @{ 
+    BUILD_TESTING = "OFF"
 }
-New-Item -ItemType Directory -Path $BuildDir
 
-# 转到构建目录
-Push-Location $BuildDir
-
-try {
-    # 配置CMake  
-    cmake .. -G "$Generator" -A x64 `
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-    -DCMAKE_PREFIX_PATH="$InstallDir" `
-    -DCMAKE_INSTALL_PREFIX="$InstallDir" `
-    -DBUILD_TESTING=OFF
-
-    # 构建阶段，指定构建类型
-    cmake --build . --config RelWithDebInfo
-
-    # 安装阶段，指定构建类型和安装目标
-    cmake --build . --config RelWithDebInfo --target install
-}
-finally {
-    # 返回原始工作目录
-    Pop-Location
-}
+. ./build-common.ps1 -Name $Name `
+    -SourceDir $SourceDir `
+    -InstallDir $InstallDir `
+    -SymbolDir $SymbolDir `
+    -Generator $Generator `
+    -TargetDll $DllPath `
+    -PdbFiles $PdbFiles `
+    -CMakeCacheVariables $CMakeCacheVariables `
+    -MultiConfig $false `
+    -Force $Force `
+    -Cleanup $Cleanup `
+    -Librarys $Librarys
