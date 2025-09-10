@@ -55,7 +55,7 @@ TargetFile="${InstallDir}/lib/libtiff.so"
 # 组装要传递给 build-common.sh 的参数
 common_args=()
 common_args+=("-installdir" "$InstallDir")
-common_args+=("-requiredlibs" "zlib")
+common_args+=("-requiredlibs" "zlib libjpeg")
 if [ "$FORCE" = true ]; then
   common_args+=("-force")
 fi
