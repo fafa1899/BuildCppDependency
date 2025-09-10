@@ -66,6 +66,7 @@ declare -a LIBRARY_SET=(
     "libjpeg"
     "libtiff"
     "giflib"
+    "freetype"
     "nlohmann-json" 
     "cpp-httplib"
     "OpenSSL"
