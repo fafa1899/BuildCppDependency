@@ -42,7 +42,7 @@ $LibrarySet.Add("libexpat") > $null
 $LibrarySet.Add("c-ares") > $null
 $LibrarySet.Add("openssl") > $null
 $LibrarySet.Add("curl") > $null
-
+$LibrarySet.Add("gflags") > $null
 #$LibrarySet.Add("OpenMVG") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
