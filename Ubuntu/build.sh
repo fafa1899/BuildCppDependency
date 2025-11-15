@@ -79,6 +79,7 @@ declare -a LIBRARY_SET=(
     "aws-sdk-cpp" 
     "paho.mqtt.cpp"
     "OpenBLAS"
+    "gmp"
 )
 
 # 转换为小写
