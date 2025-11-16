@@ -80,6 +80,7 @@ declare -a LIBRARY_SET=(
     "paho.mqtt.cpp"
     "OpenBLAS"
     "gmp"
+    "mpfr"
 )
 
 # 转换为小写
