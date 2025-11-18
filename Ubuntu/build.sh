@@ -81,6 +81,8 @@ declare -a LIBRARY_SET=(
     "OpenBLAS"
     "gmp"
     "mpfr"
+    "gflags"
+    "glog"
 )
 
 # 转换为小写
