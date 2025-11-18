@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===========================================
-# eigen.sh - 构建 eigen 库
+# SuiteSparse.sh - 构建 SuiteSparse 库
 # 接收参数：
 #   -installdir <dir>
 #   -force
@@ -43,17 +43,19 @@ while [[ $# -gt 0 ]]; do
 done
 
 # 项目配置
-Name="eigen-3.4.0"
+Name="SuiteSparse-7.11.0"
 ZipFileName="${Name}.zip"
 SourceDir="../Source"
 BuildDir="./${Name}"
 
-CMakeArgs="-DBUILD_TESTING=OFF"
-TargetFile="${InstallDir}/include/eigen3/Eigen/Eigen"
+CMakeArgs='-DSUITESPARSE_REQUIRE_BLAS=ON -DSUITPARSE_USE_64BIT_BLAS=ON -DBUILD_TESTING=OFF -DBUILD_STATIC_LIBS=OFF -DBUILD_SHARED_LIBS=ON -DSUITESPARSE_USE_FORTRAN=ON -DSUITESPARSE_C_TO_FORTRAN="(name,NAME) name##_"'
+TargetFile="${InstallDir}/lib/libumfpack.so"
+
 
 # 组装要传递给 build-common.sh 的参数
 common_args=()
 common_args+=("-installdir" "$InstallDir")
+common_args+=("-requiredlibs" "OpenBLAS gmp mpfr")
 if [ "$FORCE" = true ]; then
   common_args+=("-force")
 fi

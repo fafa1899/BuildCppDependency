@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===========================================
-# eigen.sh - 构建 eigen 库
+# ceres-solver.sh - 构建 ceres-solver 库
 # 接收参数：
 #   -installdir <dir>
 #   -force
@@ -43,17 +43,18 @@ while [[ $# -gt 0 ]]; do
 done
 
 # 项目配置
-Name="eigen-3.4.0"
+Name="ceres-solver-2.2.0"
 ZipFileName="${Name}.zip"
 SourceDir="../Source"
 BuildDir="./${Name}"
 
-CMakeArgs="-DBUILD_TESTING=OFF"
-TargetFile="${InstallDir}/include/eigen3/Eigen/Eigen"
+CMakeArgs="-DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DUSE_CUDA=ON"
+TargetFile="${InstallDir}/lib/libceres.so"
 
 # 组装要传递给 build-common.sh 的参数
 common_args=()
 common_args+=("-installdir" "$InstallDir")
+common_args+=("-requiredlibs" "eigen gflags glog OpenBLAS SuiteSparse")
 if [ "$FORCE" = true ]; then
   common_args+=("-force")
 fi
