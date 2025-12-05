@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===========================================
-# magic_enum.sh - 构建 magic_enum 库
+# tinyxml2.sh - 构建 tinyxml2 库
 # 接收参数：
 #   -installdir <dir>
 #   -force
@@ -43,13 +43,14 @@ while [[ $# -gt 0 ]]; do
 done
 
 # 项目配置
-Name="magic_enum-0.9.7"
+Name="tinyxml2-10.0.0"
 ZipFileName="${Name}.zip"
 SourceDir="../Source"
 BuildDir="./${Name}"
 
-CMakeArgs="-DMAGIC_ENUM_OPT_BUILD_EXAMPLES=OFF -DMAGIC_ENUM_OPT_BUILD_TESTS=OFF"
-TargetFile="${InstallDir}/include/magic_enum/magic_enum.hpp"
+CMakeArgs="-DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON"
+TargetFile="${InstallDir}/lib/libtinyxml2.so"
+
 
 # 组装要传递给 build-common.sh 的参数
 common_args=()

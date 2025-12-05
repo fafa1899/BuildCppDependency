@@ -85,6 +85,7 @@ declare -a LIBRARY_SET=(
     "gflags"
     "glog"
     "ceres-solver"
+    "tinyxml2"
 )
 
 # 转换为小写
