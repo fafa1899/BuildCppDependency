@@ -50,6 +50,7 @@ $LibrarySet.Add("SuiteSparse") > $null
 $LibrarySet.Add("gmp") > $null
 $LibrarySet.Add("mpfr") > $null
 $LibrarySet.Add("ceres-solver") > $null
+$LibrarySet.Add("md4c") > $null
 #$LibrarySet.Add("OpenMVG") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
