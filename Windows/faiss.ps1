@@ -1,6 +1,6 @@
-# md4c.ps1
+# faiss.ps1
 param(    
-    [string]$Name = "md4c-release-0.5.2",
+    [string]$Name = "faiss-1.13.2",
     [string]$SourceDir = "../Source",
     [string]$Generator,
     [string]$InstallDir,  
@@ -10,20 +10,22 @@ param(
 )
 
 # 目标文件
-$DllPath = "$InstallDir/bin/md4c.dll"
+$DllPath = "$InstallDir/bin/faiss.dll"
 
 # 依赖库数组
-#$Librarys = @("OpenBLAS", "gmp", "mpfr")
-$Librarys = @()    
+$Librarys = @("OpenBLAS")
 
 # 符号库文件
 $PdbFiles = @(
-    "src/RelWithDebInfo/md4c.pdb"
+    "/faiss/RelWithDebInfo/faiss.pdb"
 ) 
 
 # 额外构建参数
 $CMakeCacheVariables = @{  
-    BUILD_SHARED_LIBS = "ON"
+   BUILD_SHARED_LIBS = "ON"
+   FAISS_ENABLE_PYTHON = "OFF"
+   FAISS_ENABLE_GPU = "OFF"
+   BUILD_TESTING = "OFF"
 }
 
 . ./build-common.ps1 -Name $Name `

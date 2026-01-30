@@ -10,7 +10,7 @@ param(
 )
 
 # 目标文件
-$DllPath = "$InstallDir/bin/md4c.dll"
+$DllPath = "$InstallDir/bin/apriltag.dll"
 
 # 依赖库数组
 #$Librarys = @("OpenBLAS", "gmp", "mpfr")
@@ -18,8 +18,7 @@ $Librarys = @()
 
 # 符号库文件
 $PdbFiles = @(
-#    "SuiteSparse_config/RelWithDebInfo/suitesparseconfig.pdb"
-#    "Mongoose/RelWithDebInfo/suitesparse_mongoose.pdb"
+    "/RelWithDebInfo/apriltag.pdb"
 ) 
 
 # 额外构建参数
