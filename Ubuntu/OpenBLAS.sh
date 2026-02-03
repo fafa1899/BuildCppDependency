@@ -67,4 +67,4 @@ chmod +x ./build-common.sh
 ./build-common.sh \
   "${common_args[@]}" \
   -- \
-  "$Name" "$ZipFileName" "$SourceDir" "$BuildDir" "$CMakeArgs" "$TargetFile"
+  "$Name" "$ZipFileName" "$SourceDir" "$BuildDir" "$CMakeArgs" "$TargetFile" false

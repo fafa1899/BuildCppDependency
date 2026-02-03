@@ -86,6 +86,9 @@ declare -a LIBRARY_SET=(
     "glog"
     "ceres-solver"
     "tinyxml2"
+    "md4c"
+    "faiss"
+    "onnxruntime"
 )
 
 # 转换为小写

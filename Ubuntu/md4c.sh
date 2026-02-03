@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===========================================
-# zlib.sh - 构建 zlib 库
+# md4c.sh - 构建 md4c 库
 # 接收参数：
 #   -installdir <dir>
 #   -force
@@ -43,12 +43,14 @@ while [[ $# -gt 0 ]]; do
 done
 
 # 项目配置
-Name="zlib-1.3.1"
+Name="md4c-release-0.5.2"
 ZipFileName="${Name}.zip"
 SourceDir="../Source"
 BuildDir="./${Name}"
-CMakeArgs="-DZLIB_BUILD_EXAMPLES=OFF"
-TargetFile="${InstallDir}/lib/libz.so"
+
+CMakeArgs="-DBUILD_SHARED_LIBS=ON"
+TargetFile="${InstallDir}/lib/libmd4c.so"
+
 
 # 组装要传递给 build-common.sh 的参数
 common_args=()
