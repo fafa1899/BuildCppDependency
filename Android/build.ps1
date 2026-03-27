@@ -19,7 +19,7 @@
 
 param(
     [Parameter(Mandatory=$true)][string]$PackageName,
-    [string]$InstallDir = "D:\Work\Android3rdParty",
+    [string]$InstallDir = "D:\Github\AndroidNativeKit\ndk23\arm64-v8a",
     [bool]$ForceRebuild = $false,
     [string]$UnityNdkPath = "D:\Program Files\Unity\Hub\Editor\2022.3.62f3\Editor\Data\PlaybackEngines\AndroidPlayer\NDK"
 )

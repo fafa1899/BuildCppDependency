@@ -1,4 +1,4 @@
-# c-ares.ps1
+﻿# c-ares.ps1
 
 param(
     [string]$InstallDir = "D:\Work\Android3rdParty", 
