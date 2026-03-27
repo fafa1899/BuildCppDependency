@@ -2,7 +2,7 @@
 
 param(
     [string]$InstallDir = "D:\Work\Android3rdParty", 
-    [bool]$FORCE_REBUILD = $true
+    [bool]$FORCE_REBUILD = $false
 )
 
 $PackageName = "tiff-4.6.0t"

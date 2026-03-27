@@ -1,41 +1,58 @@
-# proj.ps1
-param(    
-    [string]$Name = "proj-9.4.1",
-    [string]$SourceDir = "../Source",
-    [string]$Generator,
-    [string]$InstallDir,  
-    [string]$SymbolDir,  
-    [bool]$Force = $false,        # 是否强制重新构建
-    [bool]$Cleanup = $true        # 是否在构建完成后删除源码和构建目录
+﻿# proj.ps1
+
+param(
+    [string]$InstallDir = "D:\Work\Android3rdParty", 
+    [bool]$FORCE_REBUILD = $true
 )
 
-# 目标文件
-$DllPath = "$InstallDir/bin/proj_9_4.dll"
+$PackageName = "proj-9.4.1"
 
-# 依赖库数组
-$Librarys = @("nlohmann-json", "sqlite", "libtiff")
-
-# 符号库文件
-$PdbFiles = @(
-    "bin/RelWithDebInfo/proj_9_4.pdb"      
-) 
-
-# 额外构建参数
-$CMakeCacheVariables = @{  
-    BUILD_TESTING  = "OFF"
-    ENABLE_CURL    = "OFF"
-    BUILD_PROJSYNC = "OFF"
+# 检查主包状态 
+$InstallMarker = "$InstallDir\installed\$PackageName.installed"
+if (-not $FORCE_REBUILD -and (Test-Path $InstallMarker)) {
+    Write-Host "=========================================" -ForegroundColor Green
+    Write-Host "[$PackageName] 已安装，跳过所有步骤 (包括依赖检查)!" -ForegroundColor Green
+    Write-Host "标记路径：$InstallMarker"
+    Write-Host "如需重新构建，请设置 `$FORCE_REBUILD = `$true"
+    Write-Host "=========================================" -ForegroundColor Green
+    exit 0
 }
 
-. ./build-common.ps1 -Name $Name `
-    -SourceDir $SourceDir `
+# 构建依赖项
+Write-Host ">>> 主包 [$PackageName] 需要构建 (Force=$FORCE_REBUILD)" -ForegroundColor Cyan
+Write-Host ">>> 正在确保依赖项就绪 (InstallDir: $InstallDir)..." -ForegroundColor Cyan
+
+$Dependencies = @(
+    "nlohmann-json",
+    "sqlite",
+    "libtiff"
+)
+
+# 【关键】传递 -InstallDir 参数给依赖管理器
+& "$PSScriptRoot\Invoke-BuildDependencies.ps1" `
+    -DependencyScripts $Dependencies `
+    -InstallDir $InstallDir
+
+# 如果上面脚本执行失败，它会直接 exit，代码不会运行到这里。
+
+# 构建主包
+Write-Host ">>> 开始配置和构建主包：$PackageName" -ForegroundColor Magenta
+
+$MyCMakeArgs = @(    
+    "-DBUILD_TESTING=OFF"
+    "-DENABLE_CURL=OFF"
+    "-DBUILD_PROJSYNC=OFF"
+)
+
+& "$PSScriptRoot\cmake-build.ps1" `
+    -PackageName $PackageName `
     -InstallDir $InstallDir `
-    -SymbolDir $SymbolDir `
-    -Generator $Generator `
-    -TargetDll $DllPath `
-    -PdbFiles $PdbFiles `
-    -CMakeCacheVariables $CMakeCacheVariables `
-    -MultiConfig $false `
-    -Force $Force `
-    -Cleanup $Cleanup `
-    -Librarys $Librarys
+    -CMakeExtraArgs $MyCMakeArgs `
+    -ForceRebuild $FORCE_REBUILD `
+    -CleanupAfterBuild $true `
+    -EnableParallel $true
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "主包 $PackageName 构建失败!"
+    exit 1
+}
