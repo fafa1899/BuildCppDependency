@@ -13,7 +13,7 @@
 #>
 
 param(
-    [Parameter(Mandatory=$true)][string[]]$DependencyScripts,
+    [string[]]$DependencyScripts,
     [string]$ScriptRoot = $PSScriptRoot,
     [Parameter(Mandatory=$true)][string]$InstallDir
 )

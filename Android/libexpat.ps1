@@ -1,4 +1,4 @@
-﻿# zlib.ps1
+﻿# libexpat.ps1
 
 param(
     [string]$InstallDir = "D:\Work\Android3rdParty", 
@@ -6,12 +6,12 @@ param(
 )
 
 # --- 定义包特定信息 ---
-$PackageName = "zlib-1.3.1"
-$Dependencies = @(
-    # zlib 没有依赖项
-)
-$MyCMakeArgs = @(
-    "-DZLIB_BUILD_EXAMPLES=OFF"
+$PackageName = "libexpat-R_2_7_0.1"
+$Dependencies = @()
+$MyCMakeArgs = @(   
+    "-DEXPAT_BUILD_DOCS=OFF"
+    "-DEXPAT_BUILD_EXAMPLES=OFF"
+    "-DEXPAT_BUILD_TESTS=OFF"
 )
 
 # --- 调用通用构建脚本 ---

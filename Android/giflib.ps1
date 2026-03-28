@@ -1,4 +1,4 @@
-﻿# zlib.ps1
+﻿# giflib.ps1
 
 param(
     [string]$InstallDir = "D:\Work\Android3rdParty", 
@@ -6,13 +6,9 @@ param(
 )
 
 # --- 定义包特定信息 ---
-$PackageName = "zlib-1.3.1"
-$Dependencies = @(
-    # zlib 没有依赖项
-)
-$MyCMakeArgs = @(
-    "-DZLIB_BUILD_EXAMPLES=OFF"
-)
+$PackageName = "giflib-5.2.2.1"
+$Dependencies = @() # giflib 没有依赖
+$MyCMakeArgs = @()  # 没有特殊的 CMake 参数
 
 # --- 调用通用构建脚本 ---
 & "$PSScriptRoot\build-common.ps1" `

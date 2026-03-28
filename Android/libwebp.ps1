@@ -1,4 +1,4 @@
-﻿# zlib.ps1
+﻿# libwebp.ps1
 
 param(
     [string]$InstallDir = "D:\Work\Android3rdParty", 
@@ -6,12 +6,14 @@ param(
 )
 
 # --- 定义包特定信息 ---
-$PackageName = "zlib-1.3.1"
+$PackageName = "libwebp-1.3.2"
 $Dependencies = @(
-    # zlib 没有依赖项
+    "zlib", "libpng", "libjpeg", "libtiff", "giflib"
 )
-$MyCMakeArgs = @(
-    "-DZLIB_BUILD_EXAMPLES=OFF"
+$MyCMakeArgs = @(    
+    "-DWEBP_UNICODE=ON"
+    "-DBUILD_SHARED_LIBS=ON"
+    "-DWEBP_LINK_STATIC=OFF"
 )
 
 # --- 调用通用构建脚本 ---
