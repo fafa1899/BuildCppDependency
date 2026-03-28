@@ -17,6 +17,10 @@ export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
 # ========== 【关键：添加 16KB 页大小链接器参数】 ==========
 export LDFLAGS="-Wl,-z,max-page-size=16384,-z,common-page-size=16384"
 
+# ========== Release 版本编译标记（正式上线必备）==========
+export CFLAGS="-DNDEBUG -fvisibility=hidden -Os"
+export CXXFLAGS="-DNDEBUG -fvisibility=hidden -Os"
+
 # ========== 1. 编译 arm64-v8a（现代手机默认架构，最重要）==========
 ARCH=arm64-v8a
 TARGET_HOST=aarch64-linux-android
@@ -39,3 +43,9 @@ make clean
 
 make -j$(nproc)
 make install
+
+# Release 必备：剥离符号（更小、更安全、正式上线版）
+$STRIP $PREFIX/lib/libiconv.so
+$STRIP $PREFIX/lib/libcharset.so
+
+echo "✅ libiconv Release 版构建完成！"
