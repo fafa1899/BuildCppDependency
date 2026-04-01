@@ -54,6 +54,9 @@ $LibrarySet.Add("md4c") > $null
 $LibrarySet.Add("apriltag") > $null
 $LibrarySet.Add("faiss") > $null
 $LibrarySet.Add("opengv") > $null
+$LibrarySet.Add("draco") > $null
+$LibrarySet.Add("basis") > $null
+$LibrarySet.Add("zstd") > $null
 #$LibrarySet.Add("OpenMVG") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
