@@ -57,6 +57,8 @@ $LibrarySet.Add("opengv") > $null
 $LibrarySet.Add("draco") > $null
 $LibrarySet.Add("basis") > $null
 $LibrarySet.Add("zstd") > $null
+$LibrarySet.Add("lerc") > $null
+$LibrarySet.Add("cgal") > $null
 #$LibrarySet.Add("OpenMVG") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null

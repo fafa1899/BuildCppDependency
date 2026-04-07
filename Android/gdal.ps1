@@ -52,10 +52,6 @@ $MyCMakeArgs = @(
     "-DBUILD_CSHARP_BINDINGS=OFF",   
     "-DBUILD_PYTHON_BINDINGS=OFF"
 )
-# 额外构建参数
-$CMakeCacheVariables = @{
-
-}
 
 # --- 调用通用构建脚本 ---
 & "$PSScriptRoot\build-common.ps1" `
