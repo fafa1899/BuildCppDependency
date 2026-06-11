@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cd /home/charlee/work/Github/BuildCppDependency/Source/
 
 tar -zxvf libiconv-1.19.tar.gz
@@ -8,20 +10,26 @@ cd libiconv-1.19
 export NDK=/home/charlee/work/android-ndk-r23b/
 # ====================================================================
 
-# Android 最低 API 版本（兼容绝大多数设备）
-export API=21
+# Android 目标 API 等级
+export API=29
 
-# NDK 工具链（Linux 版本，固定写法）
+# NDK 工具链（Linux 版本）
 export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
 
-# ========== 【关键：添加 16KB 页大小链接器参数】 ==========
-export LDFLAGS="-Wl,-z,max-page-size=16384,-z,common-page-size=16384"
+# Android 链接优化：
+# 1. 16KB page size 对齐
+# 2. 压缩动态重定位，降低 RELRO / 装载压力
+# 3. 回收无用 section，减小 so 体积
+export LDFLAGS="-Wl,-z,max-page-size=16384,-z,common-page-size=16384,--pack-dyn-relocs=android+relr,--use-android-relr-tags,--gc-sections"
 
-# ========== Release 版本编译标记（正式上线必备）==========
-export CFLAGS="-DNDEBUG -fvisibility=hidden -Os"
-export CXXFLAGS="-DNDEBUG -fvisibility=hidden -Os"
+# Release 编译优化：
+# 1. -Oz 优先缩小体积
+# 2. section 粒度优化，配合 --gc-sections
+# 3. hidden 可见性减少导出符号
+export CFLAGS="-DNDEBUG -Oz -fdata-sections -ffunction-sections -fvisibility=hidden"
+export CXXFLAGS="-DNDEBUG -Oz -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden"
 
-# ========== 1. 编译 arm64-v8a（现代手机默认架构，最重要）==========
+# arm64-v8a
 ARCH=arm64-v8a
 TARGET_HOST=aarch64-linux-android
 PREFIX=/home/charlee/work/Github/AndroidNativeKit/ndk23/arm64-v8a/
@@ -33,7 +41,7 @@ export LD=$TOOLCHAIN/bin/ld
 export RANLIB=$TOOLCHAIN/bin/llvm-ranlib
 export STRIP=$TOOLCHAIN/bin/llvm-strip
 
-make clean
+make clean || true
 ./configure \
     --host=$TARGET_HOST \
     --prefix=$PREFIX \
@@ -44,8 +52,8 @@ make clean
 make -j$(nproc)
 make install
 
-# Release 必备：剥离符号（更小、更安全、正式上线版）
-$STRIP $PREFIX/lib/libiconv.so
-$STRIP $PREFIX/lib/libcharset.so
+# Release 构建后剥离符号，进一步减小体积
+$STRIP --strip-all $PREFIX/lib/libiconv.so
+$STRIP --strip-all $PREFIX/lib/libcharset.so
 
-echo "✅ libiconv Release 版构建完成！"
+echo "✓ libiconv Android Release 构建完成"

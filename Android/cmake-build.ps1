@@ -37,7 +37,8 @@ $BuildDir = "$BuildBaseDir\$PackageName"
 $InstallMarker = "$InstallDir\installed\$PackageName.installed"
 
 # 通用链接器标志 (Android 15+ 16KB Page Size)
-$LINKER_FLAGS = "-Wl,-z,max-page-size=16384,-z,common-page-size=16384"
+# $LINKER_FLAGS = "-Wl,-z,max-page-size=16384,-z,common-page-size=16384"
+$LINKER_FLAGS = "-Wl,-z,max-page-size=16384,-z,common-page-size=16384,--pack-dyn-relocs=android+relr,--use-android-relr-tags,--gc-sections"
 
 # CMake 公共参数
 $CommonCMakeArgs = @(
@@ -46,14 +47,18 @@ $CommonCMakeArgs = @(
     "-G", "Ninja",
     "-DCMAKE_TOOLCHAIN_FILE=$UNITY_NDK/build/cmake/android.toolchain.cmake",
     "-DANDROID_ABI=arm64-v8a",
-    "-DANDROID_PLATFORM=android-21",
+    "-DANDROID_PLATFORM=android-29",
     "-DCMAKE_FIND_ROOT_PATH=$InstallDir",
     "-DCMAKE_PREFIX_PATH=$InstallDir",
     "-DCMAKE_INSTALL_PREFIX=$InstallDir",
     "-DCMAKE_BUILD_TYPE=Release",
-    "-DCMAKE_SHARED_LINKER_FLAGS=$LINKER_FLAGS",
-    "-DCMAKE_EXE_LINKER_FLAGS=$LINKER_FLAGS"
+    "-DCMAKE_C_FLAGS_RELEASE=-DNDEBUG -Oz -fdata-sections -ffunction-sections",
+    "-DCMAKE_CXX_FLAGS_RELEASE=-DNDEBUG -Oz -fdata-sections -ffunction-sections",
+    "-DCMAKE_SHARED_LINKER_FLAGS_RELEASE=$LINKER_FLAGS",
+    "-DCMAKE_EXE_LINKER_FLAGS_RELEASE=$LINKER_FLAGS",
+    "-DCMAKE_MODULE_LINKER_FLAGS_RELEASE=$LINKER_FLAGS"
 )
+
 
 # ================= 2. 检查安装标记 =================
 if (-not $ForceRebuild -and (Test-Path $InstallMarker)) {
