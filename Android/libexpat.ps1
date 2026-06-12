@@ -12,6 +12,7 @@ $MyCMakeArgs = @(
     "-DEXPAT_BUILD_DOCS=OFF"
     "-DEXPAT_BUILD_EXAMPLES=OFF"
     "-DEXPAT_BUILD_TESTS=OFF"
+    "-DEXPAT_SHARED_LIBS=OFF"
 )
 
 # --- 调用通用构建脚本 ---

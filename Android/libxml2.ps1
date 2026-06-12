@@ -17,6 +17,8 @@ $MyCMakeArgs = @(
     "-DLIBXML2_WITH_ICONV=ON"
     "-DLIBXML2_WITH_HTTP=ON"
     "-DLIBXML2_WITH_PYTHON=OFF"
+    "-DIconv_INCLUDE_DIR=$InstallDir/include",
+    "-DIconv_LIBRARY=$InstallDir/lib/libiconv.so"
 )
 
 # --- 调用通用构建脚本 ---
