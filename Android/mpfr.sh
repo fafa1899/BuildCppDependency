@@ -10,7 +10,7 @@ MPFR_VERSION=mpfr-4.2.2
 MPFR_TAR=${MPFR_VERSION}.tar.xz
 
 NDK=/home/charlee/work/android-ndk-r23b
-API=21
+API=29
 
 TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
 

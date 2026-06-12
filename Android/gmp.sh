@@ -10,7 +10,7 @@ GMP_VERSION=gmp-6.3.0
 GMP_TAR=${GMP_VERSION}.tar.xz
 
 NDK=/home/charlee/work/android-ndk-r23b
-API=21
+API=29
 
 TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
 
