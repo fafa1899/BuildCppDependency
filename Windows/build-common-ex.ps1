@@ -14,6 +14,7 @@ param(
     [bool]$MultiConfig = $false,
     [bool]$Force = $false,
     [bool]$Cleanup = $true,
+    [bool]$PreserveSource = $false,  # 保留仓库自带的源码，Cleanup 仍清理构建目录
     [string[]]$Librarys = @(),
     [string]$BuildType = "RelWithDebInfo"
 )
@@ -76,7 +77,11 @@ Set-Content -LiteralPath $InstallMarker -Encoding UTF8 -ErrorAction Stop `
     -Value "Installed on $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); BuildType=$BuildType; Generator=$Generator"
 
 if ($Cleanup) {
-    foreach ($path in @($SourcePath, $BuildDir)) {
+    $CleanupPaths = @($BuildDir)
+    if (-not $PreserveSource) {
+        $CleanupPaths += $SourcePath
+    }
+    foreach ($path in $CleanupPaths) {
         if (Test-Path -LiteralPath $path) {
             Remove-Item -LiteralPath $path -Recurse -Force -ErrorAction Stop
         }
