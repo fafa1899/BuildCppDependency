@@ -53,6 +53,7 @@ $LibrarySet.Add("ceres-solver") > $null
 $LibrarySet.Add("Imath") > $null
 $LibrarySet.Add("OpenEXR") > $null
 $LibrarySet.Add("fmt") > $null
+$LibrarySet.Add("robin-map") > $null
 $LibrarySet.Add("md4c") > $null
 $LibrarySet.Add("apriltag") > $null
 $LibrarySet.Add("faiss") > $null
