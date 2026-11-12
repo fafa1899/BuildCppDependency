@@ -16,7 +16,8 @@ param(
     [bool]$Cleanup = $true,
     [bool]$PreserveSource = $false,  # 保留仓库自带的源码，Cleanup 仍清理构建目录
     [string[]]$Librarys = @(),
-    [string]$BuildType = "RelWithDebInfo"
+    [string]$BuildType = "RelWithDebInfo",
+    [string]$SourceSubDir = ""  # 源码包内 CMake 工程所在的子目录
 )
 
 $zipFilePath = Join-Path $SourceDir "$Name.zip"
@@ -62,7 +63,11 @@ if ($SymbolDir -and $PdbFiles.Count -gt 0) {
     $BuildPdbFiles = @($PdbFiles | ForEach-Object { Join-Path $BuildDir $_ })
 }
 
-& "$PSScriptRoot/cmake-build-ex.ps1" -SourceLocalPath $SourcePath `
+$CMakeSourcePath = $SourcePath
+if ($SourceSubDir) {
+    $CMakeSourcePath = Join-Path $SourcePath $SourceSubDir
+}
+& "$PSScriptRoot/cmake-build-ex.ps1" -SourceLocalPath $CMakeSourcePath `
     -BuildDir $BuildDir `
     -Generator $Generator `
     -InstallDir $InstallDir `

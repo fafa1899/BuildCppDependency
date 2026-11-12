@@ -39,6 +39,7 @@ $LibrarySet.Add("magic_enum") > $null
 $LibrarySet.Add("iconv") > $null
 $LibrarySet.Add("libxml2") > $null
 $LibrarySet.Add("libexpat") > $null
+$LibrarySet.Add("yaml-cpp") > $null
 $LibrarySet.Add("c-ares") > $null
 $LibrarySet.Add("openssl") > $null
 $LibrarySet.Add("curl") > $null
