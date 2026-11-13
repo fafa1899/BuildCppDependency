@@ -40,6 +40,8 @@ $LibrarySet.Add("iconv") > $null
 $LibrarySet.Add("libxml2") > $null
 $LibrarySet.Add("libexpat") > $null
 $LibrarySet.Add("yaml-cpp") > $null
+$LibrarySet.Add("pystring") > $null
+$LibrarySet.Add("minizip-ng") > $null
 $LibrarySet.Add("c-ares") > $null
 $LibrarySet.Add("openssl") > $null
 $LibrarySet.Add("curl") > $null
