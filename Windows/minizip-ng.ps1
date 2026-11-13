@@ -1,4 +1,4 @@
-﻿# minizip-ng 构建脚本
+# minizip-ng 构建脚本
 param(
     [string]$Name = "minizip-ng-4.2.2",
     [string]$SourceDir = "../Source",

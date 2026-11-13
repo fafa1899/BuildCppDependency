@@ -41,6 +41,8 @@ $LibrarySet.Add("libxml2") > $null
 $LibrarySet.Add("libexpat") > $null
 $LibrarySet.Add("yaml-cpp") > $null
 $LibrarySet.Add("pystring") > $null
+$LibrarySet.Add("OpenColorIO") > $null
+$LibrarySet.Add("OpenImageIO") > $null
 $LibrarySet.Add("minizip-ng") > $null
 $LibrarySet.Add("c-ares") > $null
 $LibrarySet.Add("openssl") > $null

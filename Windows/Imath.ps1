@@ -1,4 +1,4 @@
-﻿# Imath 构建脚本
+# Imath 构建脚本
 param(
     [string]$Name = "Imath-3.2.3",
     [string]$SourceDir = "../Source",

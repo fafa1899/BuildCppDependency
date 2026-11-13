@@ -1,4 +1,4 @@
-﻿# fmt 构建脚本
+# fmt 构建脚本
 param(
     [string]$Name = "fmt-12.2.1",
     [string]$SourceDir = "../Source",

@@ -1,4 +1,4 @@
-﻿# 使用安装标记判断安装状态的通用构建脚本
+# 使用安装标记判断安装状态的通用构建脚本
 param(
     [Parameter(Mandatory=$true)]
     [string]$Name,

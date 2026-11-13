@@ -1,4 +1,4 @@
-﻿# pystring 构建脚本
+# pystring 构建脚本
 param(
     [string]$Name = "pystring-1.2.0",
     [string]$SourceDir = "../Source",

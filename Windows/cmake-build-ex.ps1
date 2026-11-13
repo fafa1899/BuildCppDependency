@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$SourceLocalPath,
     [string]$BuildDir,
     [string]$Generator,

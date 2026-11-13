@@ -1,4 +1,4 @@
-﻿# OpenEXR 构建脚本
+# OpenEXR 构建脚本
 param(
     [string]$Name = "openexr-3.5.3",
     [string]$SourceDir = "../Source",

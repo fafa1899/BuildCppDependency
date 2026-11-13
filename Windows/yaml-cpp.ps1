@@ -1,4 +1,4 @@
-﻿# yaml-cpp 构建脚本
+# yaml-cpp 构建脚本
 param(
     [string]$Name = "yaml-cpp-0.8.0",
     [string]$SourceDir = "../Source",

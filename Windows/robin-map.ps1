@@ -1,4 +1,4 @@
-﻿# robin-map 构建安装脚本
+# robin-map 构建安装脚本
 param(
     [string]$Name = "robin-map-1.4.1",
     [string]$SourceDir = "../Source",
