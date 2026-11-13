@@ -68,6 +68,8 @@ $LibrarySet.Add("basis") > $null
 $LibrarySet.Add("zstd") > $null
 $LibrarySet.Add("lerc") > $null
 $LibrarySet.Add("cgal") > $null
+$LibrarySet.Add("GKlib") > $null
+$LibrarySet.Add("METIS") > $null
 #$LibrarySet.Add("OpenMVG") > $null
 #$LibrarySet.Add("protobuf") > $null
 #$LibrarySet.Add("abseil-cpp") > $null
